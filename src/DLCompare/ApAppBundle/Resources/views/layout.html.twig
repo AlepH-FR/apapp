@@ -1,0 +1,168 @@
+<!--
+              ,,~~--___---,
+             /            .~,
+       /  _,~             )
+      (_-(~)   ~, ),,,(  /'
+       Z6  .~`' ||     \ |
+       /_,/     ||      ||
+ ~~~~~~~~~~~~~~~W`~~~~~~W`~~~~~~~~~
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>{% block title %}{{ "meta.title" | trans }}{% endblock %}</title>
+
+        {% block meta %}
+        <meta name="description"        content="{{ "meta.description" | trans }}" />
+        <meta name="keywords"           content="{{ "meta.keywords" | trans }}" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:creator" content="@AlepH_FR" />
+        {% endblock %}
+
+        <link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+        <link href='{{ asset('bundles/dlcompareapapp/css/main.css') }}' rel='stylesheet' type='text/css' media="all"   />
+        <link href="{{ asset('bundles/dlcompareapapp/css/foundation.css') }}" rel='stylesheet' type="text/css" media="all" />
+        <link href="{{ asset('bundles/dlcompareapapp/js/vendor/joyride-2.1.css') }}" rel='stylesheet' type="text/css" media="all" />
+
+        <link rel="stylesheet"  href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+        {% block head %}{% endblock %}
+
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <div class="content">
+                    <h1>
+                        <a href="{{ url('homepage') }}">
+                            <span>{{ block('title') }}</span>
+                            <img src="{{ asset('bundles/dlcompareapapp/images/apapp2.png') }}" />
+                         </a>
+                    </h1>
+                    <ul class="menu">
+                        <li class="active"><a href="{{ url('homepage') }}">{{ "layout.menu.global" | trans }}</a></li>
+                        <li class=""><a href="{{ url('champion_list') }}">{{ "layout.menu.champions" | trans }}</a></li>
+                        <li class=""><a href="{{ url('item_list') }}">{{ "layout.menu.items" | trans }}</a></li>
+                        <li class="last"><a href="{{ url('about') }}">{{ "layout.menu.about" | trans }}</a></li>
+                    </ul>
+                </div>
+            </div>
+
+<style type="text/css">
+.content { width: 900px; margin: 0 auto; }
+
+#header h1 { float: left; line-height: 100px; height: 100px; }
+#header h1 span { display: none; }
+#header h1 img { width: 250px; margin-top:-50px; margin-left:-40px; }
+#header ul.menu { float: right; line-height: 30px; height: 100px; }
+#header ul.menu li { float: left; border-right: 1px solid white; height: 40px; margin: 30px 0; padding: 0 10px;  line-height: 40px; }
+#header ul.menu li.last { border-right: 1px solid transparent; }
+    
+#main { min-height: 1000px; margin: 30px auto; }
+
+#footer { line-height: 30px; }
+
+.block { ; }
+.block h2 { padding: 5px; color: #ff9c00; border-bottom: 1px solid rgba(9,44,45,0.8); background: transparent; box-shadow: 0px 3px 0px 0px rgba(9, 44, 45, 0.5); }
+.block .inner-block { background: rgba(44,44,44,0.9); }
+.block .inner-block p { min-height: 60px; padding: 15px; clear: both; line-height: 15px; }
+.block .inner-block p img { width: 60px; margin-right: 15px; float: left; }
+
+.item-list { ; }
+.item-list ul { padding: 5px; }
+.item-list ul li { padding: 5px; float: left; width: 49px; }
+.item-list ul li img { width: 45px; border-radius: 25px; border: 2px solid black; }
+.item-list ul li.SpellDamage img { border-color: #ff9c00; }
+.item-list ul li.Mage img { border-color: #ff9c00; }
+
+ul#item-list li { width: 49px; }
+ul#item-list li .long { display: none; }
+ul#item-list li .long ol { display: none; }
+
+ul#item-list.expanded { ; }
+ul#item-list.expanded li { width: 580px; border-bottom: 1px solid rgba(9,44,45,0.8); }
+ul#item-list.expanded li a { float: left; margin-right: 16px; }
+ul#item-list.expanded li .long { display: block; float: left; width: 515px; }
+ul#item-list.expanded li .long div { float: left; width: 315px; }
+ul#item-list.expanded li .long div .champion-name  { font-family: 'Righteous', cursive; font-size: 20px; line-height: 20px; display: block; color: #ff9c00; margin: 5px 0; }
+ul#item-list.expanded li .long div .champion-title { font-size: 12px; line-height: 12px; display: block; color: white; }
+ul#item-list.expanded li .long ol { display: block; float: right; width: 200px; }
+ul#item-list.expanded li .long ol li { display: block; width: 36px; overflow: hidden; padding: 0px 6px 0px 7px; margin: 10px 0; float: right; border-right: 1px solid white; border-bottom: 0; text-align: center; font-size: 10px; }
+ul#item-list.expanded li .long ol li span { color: #ccc; }
+ul#item-list.expanded li .long ol li strong { padding-top: 5px; display: block; }
+ul#item-list.expanded li .long ol li.last { border-right: 1px solid transparent; }
+
+.champion-picture { position: fixed; top: 0; left: 0; width: 100%; z-index:-1;}
+.champion-picture img { width: 100%; opacity: 0.2; }
+
+.details p img { border: 2px solid black; border-radius: 50px; }
+.details p .champion-name  { font-family: 'Righteous', cursive; font-size: 24px; line-height: 24px; display: block; color: #ff9c00; margin: 5px 0; }
+.details p .champion-title { font-family: 'Righteous', cursive; font-size: 20px; line-height: 16px; display: block; color: white; }
+
+.row .left { width: 600px; margin-right: 30px; float: left; }
+.row .right { width: 270px; float: left; }
+.row .half { width: 435px; }
+.row .left.half { width: 435px; }
+.row .right.half { width: 435px; }
+
+.chart-container { padding: 5px; }
+
+.details .inner-block p { width: 480px; float: left; }
+.details .inner-block ol { width: 360px; float: right; padding: 15px;  text-align: right; }
+.details .inner-block ol li { display: block; width: 60px; overflow: hidden; padding: 0px 14px 0px 15px; margin: 10px 0; float: right; border-right: 1px solid white; border-bottom: 0; text-align: center; }
+.details .inner-block ol li span { color: #ccc; }
+.details .inner-block ol li strong { padding-top: 15px; display: block; font-size: 16px; }
+.details .inner-block ol li.last { border-right: 1px solid transparent; }
+
+.build .game-length { float: left; width: 40px; padding-top: 20px; text-align: center; font-size: 10px; color: #ccc; }
+.build ul { padding: 5px; float: left; height: 50px; }
+.build ul li { float: left; width: 45px; padding: 5px; }
+.build ul li img { width: 45px; border-radius: 10px; }
+.build ul li span { display: none; }
+
+form { ; }
+form fieldset { ; }
+form fieldset p { height: 30px; padding-bottom: 15px; }
+form fieldset p label { float: left; width: 229px; margin-right: 15px; text-align: left; font-size: 16px; padding: 0px 0px 10px; line-height: 20px; }
+form fieldset p input[type="text"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
+form fieldset p input[type="number"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
+form fieldset p input[type="password"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
+form fieldset p input[type="file"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
+form fieldset p select { float: left; width: 239px; height: 30px; font-size: 16px; padding: 5px; line-height: 20px; }
+form fieldset p textarea { float: left; width: 200px; height: 80px; font-size: 12px; padding: 5px; line-height: 20px; }
+form button { margin-left: 225px; width: 210px; font-size: 20px; padding: 5px; line-height: 30px; height: 40px; font-family: "Lobster", cursive; }
+form .error { color: red; display: block; margin-top: -27px; text-align: right;  width: 200px; }
+
+#main img.author { border-radius: 50px; border: 2px solid rgba(9,44,45,0.8); }
+#main img.icon { float: none; margin: 0; width: auto; }
+
+active, aura, unique, passive { font-weight: 700; }
+</style>
+
+            <div id="main" class="content">
+                {% block main %}{% endblock %}
+            </div>
+
+            <div id="footer">
+                <div class="content">
+                    {{ "footer.rights" | trans }}
+                </div>
+            </div>
+        </div>
+        <div id="to-top"></div>
+
+        <script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/vendor/foundation.min.js') }}"></script>
+        <script type="text/javascript">
+            $(document).foundation();
+            $(function() {
+                $(document).tooltip();
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+parameters:
+    lolapi.importer.match.class: DLCompare\LoLApiBundle\Importer\MatchImporter
+    lolapi.importer.champion.class: DLCompare\LoLApiBundle\Importer\ChampionImporter
+    lolapi.importer.item.class: DLCompare\LoLApiBundle\Importer\ItemImporter
+    lolapi.importer.summoner.class: DLCompare\LoLApiBundle\Importer\SummonerImporter
+
+services:
+    lolapi:
+        class: DLCompare\LoLApiBundle\Api\Api
+        arguments: [%dlcompare_lolapi.api.key%, @lolapi.cache]
+
+    lolapi.cache:
+        class: %dlcompare_lolapi.api.cache%
+
+    lolapi.importer.factory:
+        class: DLCompare\LoLApiBundle\Importer\ImporterFactory
+        arguments: [@service_container]

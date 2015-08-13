@@ -1,0 +1,88 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block title %}{{ "item.list.title" | trans }}{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/item_list.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="block info">
+	<h2>{{ "item.list.info.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			{{ "item.list.info.text" | trans | raw }}
+		</p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="left block item-list">
+		<h2>{{ "item.list.list.title" | trans }}</h2>
+		<div class="inner-block">
+			<ul id="item-list" class="expanded">
+				{% for item in items %}
+				<li class="{% for tag in item.tags|split(',') %}{{ tag }} {% endfor %}" data-cost="{{ item.cost }}">
+					<a href="{{ url('item_details', {'id': item.id}) }}">
+						<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" alt="{{ item.name }}" title="{{ item.name }}<br />{{ item.description|raw }}" />
+					</a>
+					<div class="long">
+						<div>
+							<span class="champion-name">{{ item.name }}</span>
+						</div>
+						<ol>
+							<li class="last">
+								<span>{{ "item.list.list.purchase_diff" | trans }}</span>
+								<strong>{{ attribute(stats,item.id).purchase('5.14') - attribute(stats,item.id).purchase('5.11') }}</strong>
+							</li>
+							<li>
+								<span>{{ "item.list.list.usage_diff" | trans }}</span>
+								<strong>{{ attribute(stats,item.id).usage('5.14') - attribute(stats,item.id).usage('5.11') }}</strong>
+							</li>
+						</ol>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+			<div class="spacer"></div>
+		</div>
+	</div>
+
+	<div class="right block filter">
+		<h2>{{ "item.list.filter.title" | trans }}</h2>
+		<div class="inner-block">
+			<form>
+				<fieldset>
+					<legend></legend>
+					<p>
+						<label for="name">{{ "item.list.filter.name" | trans }}</label>
+						<input type="text" name="name" id="name" value="" />
+					</p>
+					<p>
+						<label for="type">{{ "item.list.filter.type" | trans }}</label>
+						<select name="type" id="type">
+							<option value="" >{{ "item.list.filter.type.all" | trans }}</option>
+							{% for type in types %}
+							<option value="{{ type }}" {% if type == "SpellDamage" %}selected="selected"{% endif %}>{{ type }}</option>
+							{% endfor %}
+						</select>
+					</p>
+					<p>
+						<label for="cost">{{ "item.list.filter.cost" | trans }}</label>
+						<input type="number" value="0" name="cost" id="cost" />
+					</p>
+					<p>
+						<label for="expanded">{{ "item.list.filter.mode" | trans }}</label>
+						<select name="expanded" id="expanded">
+							<option value="expanded" selected="selected">{{ "item.list.filter.mode.expanded" | trans }}</option>
+							<option value="simple">{{ "item.list.filter.mode.simple" | trans }}</option>
+						</select>
+					</p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+	<div class="spacer"></div>
+</div>
+{% endblock %}

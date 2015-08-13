@@ -1,0 +1,370 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block title %}{{ champion.name }} - {{ champion.title }}{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/vendor/highcharts.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/vendor/highcharts-more.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/highcharts_skin.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="champion-picture">
+	<img src="http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{ champion.name }}_0.jpg" />
+</div>
+<div class="block details">
+	<div class="inner-block">
+		<p>
+			<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" />
+			<span class="champion-name">{{ champion.name }}</span>
+			<span class="champion-title">{{ champion.title }}</span>
+		</p>
+        <ol>
+            <li class="last">
+                <span>{{ "champion.list.list.winrate_diff" | trans }} +/-</span>
+                <strong>{{ stats.winRate('5.14') - stats.winRate('5.11') }}</strong>
+            </li>
+            <li>
+                <span>{{ "champion.list.list.gold_diff" | trans }} +/-</span>
+                <strong>{{ stats.gold('5.14') - stats.gold('5.11') }}</strong>
+            </li>
+            <li>
+                <span>{{ "champion.list.list.kda_diff" | trans }} +/-</span>
+                <strong>{{ stats.kda('5.14') - stats.kda('5.11') }}</strong>
+            </li>
+            <li>
+                <span>{{ "champion.list.list.usage_diff" | trans }} +/-</span>
+                <strong>{{ stats.usage('5.14') - stats.usage('5.11') }}</strong>
+            </li>
+        </ol>
+        <div class="spacer"></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="left half block usage">
+		<h2>{{ "champion.details.usage.title" | trans }}</h2>
+		<div class="inner-block">
+			<div class="chart-container">
+				<div id="usage-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="right half block gold">
+        <h2>{{ "champion.details.gold.title" | trans }}</h2>
+		<div class="inner-block">
+			<div class="chart-container">
+				<div id="gold-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="spacer"></div>
+</div>
+
+<div class="row">
+	<div class="left half block kda">
+		<h2>{{ "champion.details.kda.title" | trans }}</h2>
+		<div class="inner-block">
+			<div class="chart-container">
+				<div id="kda-chart"></div>
+			</div>	
+		</div>
+	</div>
+
+	<div class="right half block winrate">
+        <h2>{{ "champion.details.winrate.title" | trans }}</h2>
+		<div class="inner-block">
+			<div class="chart-container">
+				<div id="winrate-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="spacer"></div>
+</div>
+
+<div class="block items">
+	<h2>{{ "champion.details.items.title" | trans }}</h2>
+    <div class="inner-block">
+        <div class="chart-container">
+            <div id="item-chart"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="left half block build">
+        <h2>{{ "champion.details.511build.title" | trans }}</h2>
+        <div class="inner-block">
+            {% for start,end in {0:20,20:30,30:40,40:50,50:1000} %}
+            <div class="game-length">
+                {% if start == 0 %}
+                <{{ end }} min
+                {% elseif end >= 200 %}
+                >{{ start }} min
+                {% else %}
+                {{ start }}-{{ end }} min
+                {% endif %}
+            </div>
+            <ul class="">
+                {% for item in stats.commonBuild('5.11', start, end) %}
+                <li>
+                    <a href="{{ url('item_details', {'id': item.id}) }}">
+                        <img src='http://ddragon.leagueoflegends.com/cdn/5.11.1/img/item/{{ item.image }}' title="{{ item.name }}<br />{{ item.description|raw }}" />
+                        <span>{{ item.name }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+                <div class="spacer"></div>
+            </ul>
+            <div class="spacer"></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="right half block build">
+        <h2>{{ "champion.details.514build.title" | trans }}</h2>
+        <div class="inner-block">
+            {% for start,end in {0:20,20:30,30:40,40:50,50:1000} %}
+            <div class="game-length">
+                {% if start == 0 %}
+                <{{ end }} min
+                {% elseif end >= 200 %}
+                >{{ start }} min
+                {% else %}
+                {{ start }}-{{ end }} min
+                {% endif %}
+            </div>
+            <ul class="">
+                {% for item in stats.commonBuild('5.14', start, end) %}
+                <li>
+                    <a href="{{ url('item_details', {'id': item.id}) }}">
+                        <img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}' title="{{ item.name }}<br />{{ item.description|raw }}" />
+                        <span>{{ item.name }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+                <div class="spacer"></div>
+            </ul>
+            <div class="spacer"></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="spacer"></div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    $('ol li strong').each(function()
+    {
+        var color = (parseInt($(this).html()) >= 0) ? "green" : "red";
+        $(this).css('color', color);
+    });
+
+    $('#usage-chart').highcharts(
+    {
+        chart: {
+            type: 'bar',
+    		height: 200
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['5.11', '5.14']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Pick and bans percentages'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Picks',
+            data: [{{ stats.pickRate('5.11') }}, {{ stats.pickRate('5.14') }}]
+        }, {
+            name: 'Bans',
+            data: [{{ stats.banRate('5.11') }}, {{ stats.banRate('5.14') }}]
+        }]
+    });
+
+    $('#winrate-chart').highcharts(
+    {
+        chart: {
+            type: 'bar',
+    		height: 200
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['5.11', '5.14']
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: 'Win rates'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Wins',
+            data: [{{ stats.winRate('5.11') }}, {{ stats.winRate('5.14') }}]
+        }, {
+            name: 'Loss',
+            data: [{{ 100-stats.winRate('5.11') }}, {{ 100-stats.winRate('5.14') }}]
+        }]
+    });
+
+    $('#kda-chart').highcharts(
+    {
+        chart: {
+    		height: 200
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['5.11', '5.14']
+        },
+        series: [{
+        	type: 'column',
+            name: 'Kills',
+            data: [{{ stats.killsAverage('5.11') }}, {{ stats.killsAverage('5.14') }}],
+            stack: 'positive'
+        }, {
+        	type: 'column',
+            name: 'Deaths',
+            data: [{{ stats.deathsAverage('5.11') }}, {{ stats.deathsAverage('5.14') }}],
+            stack: 'negative'
+        }, {
+        	type: 'column',
+            name: 'Assists',
+            data: [{{ stats.assistsAverage('5.11') }}, {{ stats.assistsAverage('5.14') }}],
+            stack: 'positive'
+        }, {
+            type: 'spline',
+            name: 'Kda',
+            data: [{{ stats.kda('5.11') }}, {{ stats.kda('5.14') }}],
+            marker: {
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[3],
+                fillColor: 'white'
+            }
+        }]
+    });
+    
+    $('#gold-chart').highcharts({
+        chart: {
+    		height: 200,
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: ''
+        },
+        tooltip: {
+            pointFormat: '<b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.y}',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: "version",
+            colorByPoint: true,
+            data: [{
+                name: "5.11",
+                y: {{ stats.gold('5.11') }}
+            }, {
+                name: "5.14",
+                y: {{ stats.gold('5.14') }},
+                sliced: true,
+                selected: true
+            }]
+        }]
+    });
+
+    $('#item-chart').highcharts({
+        chart: {
+            polar: true,
+            type: 'area'
+        },
+        title: {
+            text: '',
+            x: -80
+        },
+        pane: {
+            size: '80%'
+        },
+        xAxis: {
+            categories: [{% for item in items %}"<img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}' style='width:14px; vertical-align: middle; padding-right: 2px; float:left;' />{{ item.name|raw }}"{% if not loop.last %},{% endif %}{% endfor %}],
+            labels: { useHTML: true },
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0,
+            max: 100
+        },
+        plotOptions: {
+            area: {
+                fillOpacity: 0.5
+            }
+        },
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}%</b><br/>'
+        },
+        legend: {
+            align: 'right',
+            verticalAlign: 'top',
+            y: 70,
+            layout: 'vertical'
+        },
+        series: [{
+            name: '5.11',
+            type: 'line',
+            data: [{% for item in items %}{{ stats.itemUsage('5.11', item) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            pointPlacement: 'on'
+        }, {
+            name: '5.14',
+            data: [{% for item in items %}{{ stats.itemUsage('5.14', item) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            pointPlacement: 'on'
+        }]
+    });
+});
+</script>
+{% endblock %}

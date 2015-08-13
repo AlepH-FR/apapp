@@ -1,0 +1,43 @@
+parameters:
+    manager.factory.class: DLCompare\LoLApiBundle\DependencyInjection\DLCompareLoLApiExtension
+    lolapi.entity.champion.class: DLCompare\LoLApiBundle\Entity\Champion
+    lolapi.manager.champion.class: DLCompare\LoLApiBundle\Model\ChampionRepository
+    lolapi.entity.game.class: DLCompare\LoLApiBundle\Entity\Game
+    lolapi.manager.game.class: DLCompare\LoLApiBundle\Model\GameRepository
+    lolapi.entity.item.class: DLCompare\LoLApiBundle\Entity\Item
+    lolapi.manager.item.class: DLCompare\LoLApiBundle\Model\ItemRepository
+    lolapi.entity.participant.class: DLCompare\LoLApiBundle\Entity\Participant
+    lolapi.manager.participant.class: DLCompare\LoLApiBundle\Model\ParticipantRepository
+    lolapi.entity.summoner.class: DLCompare\LoLApiBundle\Entity\Summoner
+    lolapi.manager.summoner.class: DLCompare\LoLApiBundle\Model\SummonerRepository
+
+services:
+    lolapi.manager.champion: 
+        factory_class: "%manager.factory.class%"
+        factory_method: getRepository
+        class: "%lolapi.manager.champion.class%"
+        arguments: [@doctrine.orm.entity_manager, "%lolapi.entity.champion.class%"]
+
+    lolapi.manager.game: 
+        factory_class: "%manager.factory.class%"
+        factory_method: getRepository
+        class: "%lolapi.manager.game.class%"
+        arguments: [@doctrine.orm.entity_manager, "%lolapi.entity.game.class%"]
+
+    lolapi.manager.item: 
+        factory_class: "%manager.factory.class%"
+        factory_method: getRepository
+        class: "%lolapi.manager.item.class%"
+        arguments: [@doctrine.orm.entity_manager, "%lolapi.entity.item.class%"]
+
+    lolapi.manager.participant: 
+        factory_class: "%manager.factory.class%"
+        factory_method: getRepository
+        class: "%lolapi.manager.participant.class%"
+        arguments: [@doctrine.orm.entity_manager, "%lolapi.entity.participant.class%"]
+
+    lolapi.manager.summoner: 
+        factory_class: "%manager.factory.class%"
+        factory_method: getRepository
+        class: "%lolapi.manager.summoner.class%"
+        arguments: [@doctrine.orm.entity_manager, "%lolapi.entity.summoner.class%"]

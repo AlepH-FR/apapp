@@ -26,6 +26,7 @@ Api
 ---
 
 Enables you to make api calls to the [**Riot League Of Legends API**][1]
+
 You'll need to have an API Key in order to access this functionnality. You can register for a key [**here**][2]
 
 * Set up the bundle
@@ -54,6 +55,7 @@ We'll add more services going further, but given the delay of the challenge, we 
 * Caching
 
 To reduce the number of API calls, the API service has been developped with a built-in cache. By default it's a FileCache which will create files in your app/cache directory
+
 You can also specify your own cache (if you want to use Memcache instead for example) in your app/config/config.yml file by writing
 
 ```yml
@@ -63,12 +65,14 @@ dlcompare_lolapi:
 ```
 
 Note that your cache must implement the DLCompare\LoLApiBundle\Api\Cache\CacheInterface
+
 The Bundle is delivered with another "Null" cache which will do... nothing. You can using by using the class DLCompare\LoLApiBundle\Api\Cache\NullCache for the dlcompare_lolapi.api.cache parameter
 
 Entity
 ------
 
 A basic set of Doctrine ORM Entites have been created so that u can begin working with proper object and avoid having to make too many API calls.
+
 Here are the entites available :
 
 * Champion : champions of LoL
@@ -143,6 +147,7 @@ parameters:
     lolapi.importer.champion.class: DLCompare\LoLApiBundle\Importer\ChampionImporter
     lolapi.importer.item.class: DLCompare\LoLApiBundle\Importer\ItemImporter
     lolapi.importer.summoner.class: DLCompare\LoLApiBundle\Importer\SummonerImporter
+```
 
 [1]: https://developer.riotgames.com/api/methods
 [2]: https://developer.riotgames.com/docs/getting-started

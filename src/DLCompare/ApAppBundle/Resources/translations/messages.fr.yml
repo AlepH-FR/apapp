@@ -1,0 +1,28 @@
+layout:
+    menu:
+        global: home
+        champions: champions
+        items: items
+        about: about
+footer:
+    rights: |
+        ApApp isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. 
+        League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+champion:
+    info: 
+        title: "Champion's list and analysis"
+        text: |
+            On this page you fill a filterable list of the champions.<br />
+            The stats given on the right of each champion on "expanded" mode is plus/minus between 5.14 and 5.11<br />
+
+    list:
+        filter:
+            title: filter
+            type: By type
+            all: All
+        list:
+            title: "Champion's list"
+            usage_diff: "use%"
+            kda_diff: "kda"
+            gold_diff: "gold"
+            win_diff: "win%"

@@ -1,0 +1,136 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block head %}
+{% endblock %}
+
+{% block main %}
+<style type="text/css">
+table { width: 900px; overflow: hidden; }
+table tr { height: 50px; }
+table tr.odd { background: #ccc; }
+table thead tr { height: 20px; }
+table tr th { font-weight: 700; color: #ccc; overflow: hidden; height: 20px; line-height: 20px; border-bottom: 1px solid rgba(9, 44, 45, 0.5); }
+table tr td { height: 50px; width: 50px; overflow: hidden; padding: 0px; line-height: 50px; }
+table tr td img { width: 50px; border-radius: 25px; }
+table tr td.avatar { width: 50px; }
+table tr td.name { width: 100px; }
+table tr td.diff { width: 20px; }
+table tr td.items { width: 260px; }
+table tr td.items div { width: 260px; height: 25px; }
+table tr td.items div span { display: block; float: left; width: 30px; height: 25px; line-height: 25px; }
+table tr td.items div ul { display: block; float: left; width: 230px; height: 25px; }
+table tr td.items div ul li { width: 25px; float: left; } 
+table tr td.items div ul li a { ; } 
+table tr td.items div ul li a img { display: block; float: left; width: 25px; }
+table tr td.items div ul li a span { display: none; }
+</style>
+<div class="block info">
+    <h2>{{ "default.index.champion.title" | trans }}</h2>
+    <div class="inner-block">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th colspan="3">{{ "default.index.champion.pickrate" | trans }}</th>
+                    <th colspan="3">{{ "default.index.champion.banrate" | trans }}</th>
+                    <th colspan="3">{{ "default.index.champion.winrate" | trans }}</th>
+                    <th colspan="3">{{ "default.index.champion.kda" | trans }}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>{{ "default.index.champion.name" | trans }}</th>
+                    <th>{{ "default.index.champion.514" | trans }}</th>
+                    <th></th>
+                    <th>{{ "default.index.champion.511" | trans }}</th>
+                    <th>{{ "default.index.champion.514" | trans }}</th>
+                    <th></th>
+                    <th>{{ "default.index.champion.511" | trans }}</th>
+                    <th>{{ "default.index.champion.514" | trans }}</th>
+                    <th></th>
+                    <th>{{ "default.index.champion.511" | trans }}</th>
+                    <th>{{ "default.index.champion.514" | trans }}</th>
+                    <th></th>
+                    <th>{{ "default.index.champion.511" | trans }}</th>
+                    <th>{{ "default.index.champion.item_diff" | trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for champion in champions %}
+                <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    <td class="avatar">
+                        <img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" />
+                    </td>
+                    <td class="name">
+                        <a href="{{ url('champion_details', {'id':champion.id}) }}">
+                            {{ champion.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ attribute(stats,champion.id).pickRate('5.14') }}
+                    </td>
+                    <td class="{% if attribute(stats,champion.id).pickRate('5.14') - attribute(stats,champion.id).pickRate('5.11') > 0 %}plus{% else %}minus{% endif %}"></td>
+                    <td>
+                        {{ attribute(stats,champion.id).pickRate('5.11') }}
+                    </td>
+                    <td>
+                        {{ attribute(stats,champion.id).banRate('5.14') }}
+                    </td>
+                    <td class="diff {% if attribute(stats,champion.id).banRate('5.14') - attribute(stats,champion.id).banRate('5.11') > 0 %}plus{% else %}minus{% endif %}"></td>
+                    <td>
+                        {{ attribute(stats,champion.id).banRate('5.11') }}
+                    </td>
+                    <td>
+                        {{ attribute(stats,champion.id).winRate('5.14') }}
+                    </td>
+                    <td class="diff {% if attribute(stats,champion.id).winRate('5.14') - attribute(stats,champion.id).winRate('5.11') > 0 %}plus{% else %}minus{% endif %}"></td>
+                    <td>
+                        {{ attribute(stats,champion.id).winRate('5.11') }}
+                    </td>
+                    <td>
+                        {{ attribute(stats,champion.id).kda('5.14') }}
+                    </td>
+                    <td class="diff {% if attribute(stats,champion.id).kda('5.14') - attribute(stats,champion.id).kda('5.11') > 0 %}plus{% else %}minus{% endif %}"></td>
+                    <td>
+                        {{ attribute(stats,champion.id).kda('5.11') }}
+                    </td>
+                    <td class="items">
+                        <div>
+                            <span>5.14</span>
+                            <ul>
+                            {% for item in attribute(stats,champion.id).commonBuild('5.14', 35, 1000) %}
+                                <li>
+                                    <a href="{{ url('item_details', {'id': item.id}) }}">
+                                        <img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}' title="{{ item.name }}<br />{{ item.description|raw }}" />
+                                        <span>{{ item.name }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                            <div class="spacer"></div>
+                        </div>
+                        <div class="spacer"></div>
+                        <div>
+                            <span>5.11</span>
+                            <ul>
+                            {% for item in attribute(stats,champion.id).commonBuild('5.11', 35, 1000) %}
+                                <li>
+                                    <a href="{{ url('item_details', {'id': item.id}) }}">
+                                        <img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}' title="{{ item.name }}<br />{{ item.description|raw }}" />
+                                        <span>{{ item.name }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                            <div class="spacer"></div>
+                        </div>
+                        <div class="spacer"></div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

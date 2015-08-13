@@ -1,0 +1,68 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block title %}{{ "default.about.title" | trans }}{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block main %}
+<div class="block about">
+	<h2>{{ "default.about.about.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			<img src="{{ asset('bundles/dlcompareapapp/images/aleph.jpg') }}" class="author" />
+			{{ "default.about.about.aleph" | trans }}<br />
+			<br />
+			<a href="https://twitter.com/AlepH_FR">twitter</a>
+		</p>
+		<p>
+			<img src="{{ asset('bundles/dlcompareapapp/images/azy.jpg') }}" class="author" />
+			{{ "default.about.about.azyphilis" | trans }}<br />
+		</p>
+	</div>
+</div>
+
+<div class="block thanks">
+	<h2>{{ "default.about.thanks.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			<img src="http://www.dlcompare.com/bundles/dlcomparemain/img/dlcompare-approved-small.png" />
+			{{ "default.about.thanks.dlcompare" | trans }}<br />
+			<br />
+			<a href="http://www.dlcompare.com">www.dlcompare.com</a>
+		</p>
+		<p>
+			<img src="http://symfony.com/logos/symfony_black_03.png?v=4" />
+			{{ "default.about.thanks.symfony" | trans }}<br />
+			<br />
+			<a href="http://www.symfony.com">www.symfony.com</a>
+		</p>
+		<p>
+			<img src="{{ asset('bundles/dlcompareapapp/images/logo_nb.png') }}" />
+			{{ "default.about.thanks.nb" | trans }}<br />
+			<br />
+			<a href="http://www.facebook.com/teamnuitblanche">facebook</a>
+		</p>
+		<p>
+			{{ "default.about.thanks.riot" | trans }}<br />
+		</p>
+	</div>
+</div>
+
+<div class="block code">
+	<h2>{{ "default.about.code.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" />
+			{{ "default.about.code.text" | trans }}<br />
+			<a href="https://github.com/AlepH-FR/apapp/" />github</a>
+		</p>
+		<p>
+			{{ "default.about.code.api" | trans }}<br />
+		</p>
+		<p>
+			{{ "default.about.code.methodology" | trans }}<br />
+		</p>
+	</div>
+</div>
+{% endblock %}

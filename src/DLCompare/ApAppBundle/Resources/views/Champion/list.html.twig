@@ -1,0 +1,93 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block title %}{{ "champion.list.title" | trans }}{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/champion_list.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="block info">
+	<h2>{{ "champion.list.info.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			{{ "champion.list.info.text" | trans | raw }}
+		</p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="left block item-list">
+		<h2>{{ "champion.list.list.title" | trans }}</h2>
+		<div class="inner-block">
+			<ul id="item-list" class="expanded">
+				{% for champion in champions %}
+				<li class="champion {% for tag in champion.tags|split(',') %}{{ tag }} {% endfor %}">
+					<a href="{{ url('champion_details', {'id': champion.id}) }}">
+						<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" alt="{{ champion.name }}" title="{{ champion.name }}" />
+					</a>
+					<div class="long">
+						<div>
+							<span class="champion-name">{{ champion.name }}</span>
+							<span class="champion-title">{{ champion.title }}</span>
+						</div>
+						<ol>
+							<li class="last">
+								<span>{{ "champion.list.list.winrate_diff" | trans }}</span>
+								<strong>{{ attribute(stats,champion.id).winRate('5.14') - attribute(stats,champion.id).winRate('5.11') }}</strong>
+							</li>
+							<li>
+								<span>{{ "champion.list.list.gold_diff" | trans }}</span>
+								<strong>{{ attribute(stats,champion.id).gold('5.14') - attribute(stats,champion.id).gold('5.11') }}</strong>
+							</li>
+							<li>
+								<span>{{ "champion.list.list.kda_diff" | trans }}</span>
+								<strong>{{ attribute(stats,champion.id).kda('5.14') - attribute(stats,champion.id).kda('5.11') }}</strong>
+							</li>
+							<li>
+								<span>{{ "champion.list.list.usage_diff" | trans }}</span>
+								<strong>{{ attribute(stats,champion.id).usage('5.14') - attribute(stats,champion.id).usage('5.11') }}</strong>
+							</li>
+						</ol>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+			<div class="spacer"></div>
+		</div>
+	</div>
+
+	<div class="right block filter">
+		<h2>{{ "champion.list.filter.title" | trans }}</h2>
+		<div class="inner-block">
+			<form>
+				<fieldset>
+					<legend></legend>
+					<p>
+						<label for="name">{{ "champion.list.filter.name" | trans }}</label>
+						<input type="text" name="name" id="name" value="" />
+					</p>
+					<p>
+						<label for="type">{{ "champion.list.filter.type" | trans }}</label>
+						<select name="type" id="type">
+							<option value="champion" >{{ "champion.list.filter.type.all" | trans }}</option>
+							{% for type in types %}
+							<option value="{{ type }}" {% if type == "Mage" %}selected="selected"{% endif %}>{{ type }}</option>
+							{% endfor %}
+						</select>
+					</p>
+					<p>
+						<label for="expanded">{{ "champion.list.filter.mode" | trans }}</label>
+						<select name="expanded" id="expanded">
+							<option value="expanded" selected="selected">{{ "champion.list.filter.mode.expanded" | trans }}</option>
+							<option value="simple">{{ "champion.list.filter.mode.simple" | trans }}</option>
+						</select>
+					</p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+	<div class="spacer"></div>
+</div>
+{% endblock %}

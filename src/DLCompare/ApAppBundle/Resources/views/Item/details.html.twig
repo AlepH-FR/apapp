@@ -1,0 +1,180 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/vendor/highcharts.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/vendor/highcharts-more.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/highcharts_skin.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="block details">
+	<div class="inner-block">
+		<p>
+			<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" />
+			<span class="champion-name">{{ item.name }}</span>
+		</p>
+        <ol>
+            <li class="last">
+                <span>{{ "item.list.list.purchase_diff" | trans }} +/-</span>
+                <strong>{{ stats.purchase('5.14') - stats.purchase('5.11') }}</strong>
+            </li>
+            <li>
+                <span>{{ "item.list.list.usage_diff" | trans }} +/-</span>
+                <strong>{{ stats.usage('5.14') - stats.usage('5.11') }}</strong>
+            </li>
+        </ol>
+        <div class="spacer"></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="left half block difference">
+		<h2>{{ "item.details.511.version" | trans }}</h2>
+		<div class="inner-block">
+			<p>
+				{{ data.511.gold.total }} <img src="{{ asset('bundles/dlcompareapapp/images/ico/gold.png') }}" class="icon" /><br />
+				<br />
+				{{ data.511.description|raw }}
+			</p>
+		</div>
+	</div>
+
+	<div class="right half block difference">
+		<h2>{{ "item.details.514.version" | trans }}</h2>
+		<div class="inner-block">
+			<p>
+				{{ data.514.gold.total }} <img src="{{ asset('bundles/dlcompareapapp/images/ico/gold.png') }}" class="icon" /><br />
+				<br />
+				{{ data.514.description|raw }}
+			</p>
+		</div>
+	</div>
+	<div class="spacer"></div>
+</div>
+
+<div class="row">
+	<div class="left half block usage">
+		<h2>{{ "item.details.usage.title" | trans }}</h2>
+		<div class="inner-block">
+			<div class="chart-container">
+				<div id="usage-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="right half block purchase">
+        <h2>{{ "item.details.purchase.title" | trans }}</h2>
+		<div class="inner-block">
+			<div class="chart-container">
+				<div id="purchase-chart"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="spacer"></div>
+</div>
+
+<div class="block champions">
+	<h2>{{ "item.details.champions.title" | trans }}</h2>
+    <div class="inner-block">
+        <div class="chart-container">
+            <div id="champion-chart"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () 
+{
+    $('ol li strong').each(function()
+    {
+        var color = (parseInt($(this).html()) >= 0) ? "green" : "red";
+        $(this).css('color', color);
+    });
+
+    $('#usage-chart').highcharts(
+    {
+        chart: {
+            type: 'bar',
+    		height: 200
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['5.11', '5.14']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Usage rate per version'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Picks',
+            data: [{{ stats.usage('5.11') }},{{ stats.usage('5.14') }}]
+        }]
+    });
+
+    $('#champion-chart').highcharts({
+        chart: {
+            polar: true,
+            type: 'area'
+        },
+        title: {
+            text: '',
+            x: -80
+        },
+        pane: {
+            size: '80%'
+        },
+        xAxis: {
+            categories: [{% for champion in champions %}"<img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}' style='width:14px; vertical-align: middle; padding-right: 2px; float:left;' />{{ champion.name|raw }}"{% if not loop.last %},{% endif %}{% endfor %}],
+            labels: { useHTML: true },
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0
+        },
+        plotOptions: {
+            area: {
+                fillOpacity: 0.5
+            }
+        },
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}%</b><br/>'
+        },
+        legend: {
+            align: 'right',
+            verticalAlign: 'top',
+            y: 70,
+            layout: 'vertical'
+        },
+        series: [{
+            name: '5.11',
+            type: 'line',
+            data: [{% for champion in champions %}{{ stats.championUsage('5.11', champion) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            pointPlacement: 'on'
+        }, {
+            name: '5.14',
+            data: [{% for champion in champions %}{{ stats.championUsage('5.14', champion) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            pointPlacement: 'on'
+        }]
+    });
+});
+</script>
+{% endblock %}

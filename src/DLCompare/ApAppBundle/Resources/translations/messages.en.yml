@@ -1,0 +1,123 @@
+layout:
+    menu:
+        global: home
+        champions: champions
+        items: items
+        about: about
+meta:
+    keywords: "apapp, league of legends, api challenge 2.0, ap items, 5.11, 5.14"
+    description: "ApApp rovides data about champions and items before and after the big AP item update - between 5.11 and 5.14"
+footer:
+    rights: |
+        ApApp isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. 
+        League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+champion:
+    list:
+        title: List of LoL Champions
+        info: 
+            title: "Champions list and analysis"
+            text: |
+                On this page you can find a filterable list of LoL champions (the orange circled ones being the champions tagged as Mage).<br />
+                You can click on each champion's image for more details !<br />
+                <br />
+                The stats given on the right of each champion on "expanded" mode are plus/minus between 5.14 and 5.11.
+        filter:
+            title: Filter
+            name: By name
+            type: By type
+            type.all: All
+            mode: Display mode
+            mode.expanded: Expanded
+            mode.simple: Simple
+        list:
+            title: "Champions list"
+            usage_diff: "use%"
+            kda_diff: "kda"
+            gold_diff: "gold"
+            winrate_diff: "win%"
+    details:
+        usage:
+            title: Usage
+        items:
+            title: Items used for 35min+ games
+        winrate:
+            title: Win rate
+        gold:
+            title: Gold
+        kda:
+            title: KDA
+        511build: 
+            title: "5.11 usual builds by duration"
+        514build: 
+            title: "5.14 usual builds by duration"
+
+item:
+    details:
+        511:
+            version: 5.11 version
+        514:
+            version: 5.14 version
+        usage:
+            title: Usage
+        purchase:
+            title: Purchase
+        champions:
+            title: Champions using it the most on 35+ min games
+    list:
+        title: List of LoL Items
+        info:
+            title: "Items list and analysis"
+            text: |
+                On this page you can find a filterable list of LoL items (the orange circled ones being the spell damage items).<br />
+                You can click on each champion's image for more details !<br />
+                <br />
+                The stats given on the right of each item on "expanded" mode are plus/minus between 5.14 and 5.11.
+        list:
+            title: "Items list"
+            usage_diff: "use%"
+            purchase_diff: "time"
+        filter:
+            title: Filter
+            type: By type
+            type.all: All
+            cost: By gold cost
+            name: By name
+            mode: Display mode
+            mode.expanded: Expanded
+            mode.simple: Simple
+default:
+    index:
+        champion:
+            name: name
+            pickrate: pick %
+            banrate: ban %
+            winrate: win %
+            kda: kda
+            514: "5.14"
+            511: "5.11"
+            item_diff: items
+    about:
+        title: About ApApp
+        about:
+            title: About the authors
+            aleph: |
+                AlepH is the php / js / html developer of the project. Web developer, he likes to play LoL, to play Symfony, and eating Sausage. Sometimes he manage to do the three in the mean time.
+            azyphilis: |
+                Azy is the graphist and designer of the website. She likes to play video games, to pet our cats, and to drink white coffee. She often manages to do the three in the mean time.
+        thanks:
+            title: Thanking
+            dlcompare: |
+                DLCompare is a website and a gamer's price-comparison tool, but it's mainly a crew of really friendly nerdz. For allowing me to use their (awesome) servers, they should deserve some credits, right ?
+            symfony: |
+                Because Symfony 2 makes PHP developers feel like they were real developers !
+            nb: |
+                Nuit Blanche has been our gaming team... for 15 years... They always supported us.
+            riot: |
+                Because the game is fun, because the challenge is fun, and because it's rare to work on a project involving these two passions... thank you Riot !
+        code:
+            title: About the code
+            text: |
+                The code of this project has mainly been made thanks to Symfony 2 (PHP Framework), Doctrine 2 (PHP ORM & DBAL), jQuery (js), Highcharts (js).
+                Symfony 2 vendors of the symfony-standard github project, and js vendors are the only pieces of code which weren't written exclusively for this project.
+            methodology:
+            api: 

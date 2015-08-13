@@ -1,3 +1,4 @@
-app:
-    resource: "@AppBundle/Controller/"
+dl_compare_ap_app:
+    resource: "@DLCompareApAppBundle/Controller/"
     type:     annotation
+    prefix:   /
