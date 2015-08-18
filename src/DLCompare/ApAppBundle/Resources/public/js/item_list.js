@@ -17,7 +17,7 @@ apapp.item_list.prototype.init = function()
 
 	$('ul#item-list.expanded li .long ol li strong').each(function()
 	{
-		var color = (parseInt($(this).html()) >= 0) ? "green" : "red";
+		var color = (parseFloat($(this).html()) >= 0) ? "green" : "red";
 		$(this).css('color', color);
 	});
 };

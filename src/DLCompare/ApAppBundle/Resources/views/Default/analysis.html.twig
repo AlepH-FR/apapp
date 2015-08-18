@@ -1,0 +1,113 @@
+{% extends "DLCompareApAppBundle::layout.html.twig" %}
+
+{% block title %}{{ "default.analysis.title" | trans }}{% endblock %}
+
+{% block head %}
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/tabs.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="block analysis">
+	<h2>{{ "default.analysis.data.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			{{ "default.analysis.data.text" | trans }}
+			Here is some information about the data we've managed to parse from the Riot API.<br />
+			Don't forget when analysing our pages that Caitlyn & Jayce were unavailable during 5.11, and that Tham Kench wasn't yet available.<br />
+			<br />
+			{{ "default.analysis.data.last_update" | trans }}
+			{{ "default.analysis.data.total_games" | trans }}
+			Total games parsed : <strong>{{ total }}</strong>.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>{{ "version" | trans }}</th>
+					<th>BR</th>
+					<th>EUNE</th>
+					<th>EUW</th>
+					<th>KR</th>
+					<th>LAN</th>
+					<th>LAS</th>
+					<th>NA</th>
+					<th>OCE</th>
+					<th>RU</th>
+					<th>TR</th>
+					<th>{{ "total" | trans }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>5.11</th>
+					<td>{{ stat.countByVersionByRegion('5.11', 'br') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'eune') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'euw') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'kr') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'lan') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'las') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'na') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'oce') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'ru') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.11', 'tr') }}</td>
+					<th>{{ stat.countByVersion('5.11') }}</th>
+				</tr>
+				<tr>
+					<th>5.14</th>
+					<td>{{ stat.countByVersionByRegion('5.14', 'br') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'eune') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'euw') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'kr') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'lan') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'las') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'na') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'oce') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'ru') }}</td>
+					<td>{{ stat.countByVersionByRegion('5.14', 'tr') }}</td>
+					<th>{{ stat.countByVersion('5.14') }}</th>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th>{{ "total" | trans }}</th>
+					<td>{{ stat.countByRegion('br') }}</td>
+					<td>{{ stat.countByRegion('eune') }}</td>
+					<td>{{ stat.countByRegion('euw') }}</td>
+					<td>{{ stat.countByRegion('kr') }}</td>
+					<td>{{ stat.countByRegion('lan') }}</td>
+					<td>{{ stat.countByRegion('las') }}</td>
+					<td>{{ stat.countByRegion('na') }}</td>
+					<td>{{ stat.countByRegion('oce') }}</td>
+					<td>{{ stat.countByRegion('ru') }}</td>
+					<td>{{ stat.countByRegion('tr') }}</td>
+					<th>{{ total }}</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+
+<ul class="tabs">
+	{% for type in types %}
+	<li class="{{ type.name }}">{{ type.name }}</li>
+	{% endfor %}
+</ul>
+
+{% for type in types %}
+<div class="block analysis tab" id="{{ type.name }}">
+	<h2>{{ type.name }}</h2>
+	<div class="inner-block">
+		<p>
+			{{ "default.analysis.champions.text" | trans }} : 
+			{% for champion in type.champions %}
+				<a href="{{ url('champion_details', {'id': champion.id}) }}">{{ champion.name }}</a>
+				{% if not loop.last %},{% endif %}
+			{% endfor %}
+		</p>
+		<p>
+			{% set text = "default.analysis.type." ~ type.name ~ ".text" %}
+			{{ text | trans }}
+		</p>
+	</div>
+</div>
+{% endfor %}
+{% endblock %}

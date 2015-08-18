@@ -15,6 +15,13 @@ use DLCompare\LoLApiBundle\Entity\Item;
  */
 class ChampionRepository extends EntityRepository
 {
+	/**
+	 * Get main champions using an item
+	 * 
+	 * @param DLCompare\LoLApiBundle\Entity\Item $item
+	 * @param integer $maxResults
+	 * @return array(DLCompare\LoLApiBundle\Entity\Champion)
+	 */
 	public function getMainChampions(Item $item, $maxResults = 10)
 	{
 		$qb = $this->createQueryBuilder('c');

@@ -16,7 +16,13 @@ use DLCompare\LoLApiBundle\Entity\Item;
  * repository methods below.
  */
 class ParticipantRepository extends EntityRepository
-{
+{    
+	/**
+	 * Counts number of game participants for a specified version
+	 * 
+	 * @param string $version
+	 * @return integer
+	 */
 	public function countByVersion($version)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -33,6 +39,13 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of game participants of a champion for a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function countByVersionByChampion($version, Champion $champion)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -51,6 +64,38 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of game participants of a champion tag (or role) for a specified version
+	 * 
+	 * @param string $version
+	 * @param string tag
+	 * @return integer
+	 */
+	public function countByVersionByTag($version, $tag)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(p)')
+			->leftJoin('p.game', 'g')
+			->leftJoin('p.champion', 'c')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->like('c.tags', $ex->literal($tag.'%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+	}
+
+	/**
+	 * Counts number of game participants using an item for a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Item $item
+	 * @return integer
+	 */
 	public function countByVersionByItem($version, Item $item)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -69,6 +114,13 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of wins of a champion for a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function countByVersionByChampionByWin($version, Champion $champion)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -88,6 +140,39 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of wins of a champion tag (or role) for a specified version
+	 * 
+	 * @param string $version
+	 * @param string tag
+	 * @return integer
+	 */
+	public function countByVersionByTagByWin($version, $tag)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(p)')
+			->leftJoin('p.game', 'g')
+			->leftJoin('p.champion', 'c')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->like('c.tags', $ex->literal($tag.'%')))
+			->andWhere($ex->eq('p.winner', $ex->literal(1)))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+	}
+
+	/**
+	 * Counts number of kills of a champion or a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function countKillsByVersionByChampion($version, Champion $champion)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -106,6 +191,38 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of kills for a champion's tag (or role) or a specified version
+	 * 
+	 * @param string $version
+	 * @param string $tag
+	 * @return integer
+	 */
+	public function countKillsByVersionByTag($version, $tag)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('SUM(p.kills)')
+			->leftJoin('p.game', 'g')
+			->leftJoin('p.champion', 'c')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->like('c.tags', $ex->literal($tag.'%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+	}
+
+	/**
+	 * Counts number of deaths of a champion or a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function countDeathsByVersionByChampion($version, Champion $champion)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -124,6 +241,38 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of deaths for a champion's tag (or role) or a specified version
+	 * 
+	 * @param string $version
+	 * @param string $tag
+	 * @return integer
+	 */
+	public function countDeathsByVersionByTag($version, $tag)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('SUM(p.deaths)')
+			->leftJoin('p.game', 'g')
+			->leftJoin('p.champion', 'c')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->like('c.tags', $ex->literal($tag.'%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+	}
+
+	/**
+	 * Counts number of assists of a champion or a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function countAssistsByVersionByChampion($version, Champion $champion)
 	{
 		$qb = $this->createQueryBuilder('p');
@@ -142,6 +291,38 @@ class ParticipantRepository extends EntityRepository
 		return $result;
 	}
 
+	/**
+	 * Counts number of assists for a champion's tag (or role) or a specified version
+	 * 
+	 * @param string $version
+	 * @param string $tag
+	 * @return integer
+	 */
+	public function countAssistsByVersionByTag($version, $tag)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('SUM(p.assists)')
+			->leftJoin('p.game', 'g')
+			->leftJoin('p.champion', 'c')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->like('c.tags', $ex->literal($tag.'%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+	}
+
+	/**
+	 * Get gpm of a champion or a specified version
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function getGoldPerMinute($version, Champion $champion)
 	{
 		// gold
@@ -178,6 +359,15 @@ class ParticipantRepository extends EntityRepository
 		;
 	}
 
+	/**
+	 * Get most common build of a champion based on game length and version
+	 * 
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @param string $version
+	 * @param integer $start 
+	 * @param integer $end
+	 * @return array(DLCompare\LoLApiBundle\Entity\Item)
+	 */
 	public function getCommonBuild(Champion $champion, $version, $start = 40, $end = 1000)
 	{
 		$sql = "
@@ -208,4 +398,3 @@ class ParticipantRepository extends EntityRepository
         return $this->findOneById($result[0]['id']);
 	}
 }
-

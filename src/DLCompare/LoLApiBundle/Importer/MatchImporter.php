@@ -91,7 +91,7 @@ class MatchImporter implements ImporterInterface
     	$summoners = [];
     	foreach($data->participantIdentities as $k => $pi)
     	{
-    		if(!isset($pi->player)) 
+    		if(true || !isset($pi->player)) 
     		{ 
     			$summoners[$pi->participantId] = null;
     			continue;

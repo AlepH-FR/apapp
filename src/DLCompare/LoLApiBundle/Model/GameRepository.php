@@ -13,8 +13,14 @@ use DLCompare\LoLApiBundle\Entity\Champion;
  * repository methods below.
  */
 class GameRepository extends EntityRepository
-{	
-	public function countBansByBersion($version)
+{		
+	/**
+	 * Counts number of bans for a version of the game
+	 * 
+	 * @param string $version
+	 * @return integer
+	 */
+	public function countBansByVersion($version)
 	{
 		$qb = $this->createQueryBuilder('g');
 		$ex = $qb->expr();
@@ -29,7 +35,14 @@ class GameRepository extends EntityRepository
 
 		return $result;
 	}
-
+	
+	/**
+	 * Counts number of bans for a version of the game for a specified champion
+	 * 
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @return integer
+	 */
 	public function countBansByVersionByChampion($version, Champion $champion)
 	{
 		$qb = $this->createQueryBuilder('g');
@@ -46,4 +59,112 @@ class GameRepository extends EntityRepository
 
 		return $result;
 	}
+
+	/**
+	 * Counts number of bans for a version of the game for a specified champion tag (or role)
+	 * 
+	 * @param string $version
+	 * @param string $tag
+	 * @return integer
+	 */
+	public function countBansByVersionByTag($version, $tag)
+	{
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(b)')
+			->leftJoin('g.bans', 'b')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->like('b.tags', $ex->literal($tag.'%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+	}     
+
+	/**
+	 * Counts number of games in database
+	 * 
+	 * @return integer
+	 */
+	public function count()
+    {
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(g)')
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+    }    
+
+	/**
+	 * Counts number of games for a specified version
+	 * 
+	 * @param string $version
+	 * @return integer
+	 */
+	public function countByVersion($version)
+    {
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(g)')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+    }    
+
+	/**
+	 * Counts number of games for a specified region
+	 * 
+	 * @param string $region
+	 * @return integer
+	 */
+	public function countByRegion($region)
+    {
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(g)')
+			->where($ex->eq('g.region', $ex->literal($region)))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+    }      
+
+	/**
+	 * Counts number of games for a specified region and version
+	 * 
+	 * @param string $version
+	 * @param string $region
+	 * @return integer
+	 */
+	public function countByVersionByRegion($version, $region)
+    {
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(g)')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->eq('g.region', $ex->literal($region)))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
+    }
 }

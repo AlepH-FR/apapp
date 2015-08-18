@@ -4,7 +4,9 @@ layout:
         champions: champions
         items: items
         about: about
+        analysis: analysis
 meta:
+    title: ApApp
     keywords: "apapp, league of legends, api challenge 2.0, ap items, 5.11, 5.14"
     description: "ApApp rovides data about champions and items before and after the big AP item update - between 5.11 and 5.14"
 footer:
@@ -87,7 +89,11 @@ item:
             mode.simple: Simple
 default:
     index:
+        type:
+            title: "Version comparison by type of champion"
+            name: "Type"
         champion:
+            title: "Champions list and version comparison"
             name: name
             pickrate: pick %
             banrate: ban %

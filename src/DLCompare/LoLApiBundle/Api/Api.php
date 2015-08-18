@@ -86,8 +86,8 @@ class Api
                 $content = $this->getContent($url);
             } 
             catch(RateLimitExceededException $e)
-            {
-                sleep(200);
+                {
+                    sleep(10);
                 $content = $this->getContent($url);
             }
             self::$cache->set($method, array_merge($arguments, $querystring), $content);

@@ -6,7 +6,7 @@ use DLCompare\LoLApiBundle\Entity\Champion;
 use DLCompare\LoLApiBundle\Entity\Item;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ChampionStats
+class ChampionStats extends AbstractStats
 {
 	protected $champion;
 
@@ -18,32 +18,37 @@ class ChampionStats
 		$this->container = $container;
 	}
 
-    public function getPickRate($version)
+    public function getCacheId()
+    {
+        return "champion-" . $this->champion->getId();
+    }
+
+    public function _getPickRate($version)
     {
     	$totalPicks		= $this->container->get('lolapi.manager.participant')->countByVersion($version);
     	$championPicks	= $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $this->champion);
         
         return ($totalPicks == 0)
     		? 0
-    		: number_format(100 * $championPicks / $totalPicks, 2);
+    		: number_format(10 * 100 * $championPicks / $totalPicks, 2);
     }
 
-    public function getBanRate($version)
+    public function _getBanRate($version)
     {
-    	$totalBans		= $this->container->get('lolapi.manager.game')->countBansByBersion($version);
+    	$totalBans		= $this->container->get('lolapi.manager.game')->countBansByVersion($version);
     	$championBans	= $this->container->get('lolapi.manager.game')->countBansByVersionByChampion($version, $this->champion);
         
         return ($totalBans == 0)
     		? 0
-    		: number_format(100 * $championBans / $totalBans, 2);
-    }
+    		: number_format(6 * 100 * $championBans / $totalBans, 2);
+    }   
 
-    public function getUsage($version)
+    public function _getUsage($version)
     {
     	return $this->getBanRate($version) + $this->getPickRate($version);
     }
 
-    public function getWinRate($version)
+    public function _getWinRate($version)
     {
     	$championPicks	= $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $this->champion);
     	$wins			= $this->container->get('lolapi.manager.participant')->countByVersionByChampionByWin($version, $this->champion);
@@ -54,7 +59,7 @@ class ChampionStats
     	;
     }
 
-    public function getKillsAverage($version)
+    public function _getKillsAverage($version)
     {
     	$championPicks	= $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $this->champion);
     	$kills          = $this->container->get('lolapi.manager.participant')->countKillsByVersionByChampion($version, $this->champion);
@@ -65,7 +70,7 @@ class ChampionStats
     	;
     }
 
-    public function getDeathsAverage($version)
+    public function _getDeathsAverage($version)
     {
     	$championPicks	= $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $this->champion);
     	$deaths         = $this->container->get('lolapi.manager.participant')->countDeathsByVersionByChampion($version, $this->champion);
@@ -77,7 +82,7 @@ class ChampionStats
     	
     }
 
-    public function getAssistsAverage($version)
+    public function _getAssistsAverage($version)
     {
     	$championPicks	= $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $this->champion);
     	$assists        = $this->container->get('lolapi.manager.participant')->countAssistsByVersionByChampion($version, $this->champion);
@@ -88,7 +93,7 @@ class ChampionStats
     	;
     }
 
-    public function getKda($version)
+    public function _getKda($version)
     {
     	$kda = ($this->getDeathsAverage($version) == 0)
 			? 0
@@ -97,7 +102,7 @@ class ChampionStats
     	return number_format($kda, 2);
     }
 
-    public function getGold($version)
+    public function _getGold($version)
     {
     	return $this->container->get('lolapi.manager.participant')->getGoldPerMinute($version, $this->champion);  	
     }
@@ -114,7 +119,7 @@ class ChampionStats
         return $items;
     }
 
-    public function getItemUsage($version, Item $item)
+    public function _getItemUsage($version, Item $item)
     {
         $championPicks  = $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $this->champion);
         $useCount       = $this->container->get('lolapi.manager.item')->getUsage($this->champion, $version, $item);

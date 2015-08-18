@@ -25,7 +25,9 @@ class ImporterCommand extends ContainerAwareCommand
         $this
             ->setName('dlcompare:apapp:import')
             ->setDescription('Imports data from dataset')
-            ->setHelp("");
+            ->addArgument('version', InputArgument::REQUIRED, 'version')
+            ->addArgument('region', InputArgument::REQUIRED, 'region')
+        ;
     }
 
     /**
@@ -36,18 +38,23 @@ class ImporterCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {     
+        $wversion = $input->getArgument('version');
+        $wregion  = $input->getArgument('region');
+
         $dir = __DIR__.'/../Resources/dataset';
 
         $versions   = ['5.14','5.11'];
         $modes      = ['RANKED_SOLO','NORMAL_5X5'];
-        $regions    = ['br', 'eune', 'euw', 'kr', 'lan', 'las', 'na', 'oce', 'ru', 'tr'];
+        $regions    = ['eune', 'euw', 'kr', 'lan', 'las', 'na', 'oce', 'ru', 'tr'];
 
         foreach($versions as $version)
         {
+            if($version != $wversion) { continue; }
             foreach($modes as $mode)
             {
                 foreach($regions as $region)
                 {
+                    if($region != $wregion) { continue; }
                     $path = $version . '/' . $mode . '/' . strtoupper($region) . '.json';
                     $json = json_decode(file_get_contents($dir . '/' . $path));
                     

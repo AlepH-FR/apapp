@@ -15,6 +15,13 @@ use DLCompare\LoLApiBundle\Entity\Item;
  */
 class ItemRepository extends EntityRepository
 {
+	/**
+	 * Get main items used by a champion
+	 * 
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @param integer $maxResults
+	 * @return array(DLCompare\LoLApiBundle\Entity\Item)
+	 */
 	public function getMainItems(Champion $champion, $maxResults = 10)
 	{
 		$qb = $this->createQueryBuilder('i');
@@ -37,6 +44,14 @@ class ItemRepository extends EntityRepository
 		;		
 	}
 
+	/**
+	 * Get usage of an item on for a champion, on a specified version
+	 * 
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @param string $version
+	 * @param integer $maxResults
+	 * @return integer
+	 */
 	public function getUsage(Champion $champion, $version, Item $item)
 	{
 		$qb = $this->createQueryBuilder('i');

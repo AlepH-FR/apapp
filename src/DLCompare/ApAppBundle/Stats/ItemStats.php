@@ -6,7 +6,7 @@ use DLCompare\LoLApiBundle\Entity\Champion;
 use DLCompare\LoLApiBundle\Entity\Item;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ItemStats
+class ItemStats extends AbstractStats
 {
 	protected $item;
 
@@ -18,7 +18,12 @@ class ItemStats
 		$this->container = $container;
 	}
 
-    public function getUsage($version)
+    public function getCacheId()
+    {
+        return "item-" . $this->item->getId();
+    }
+
+    public function _getUsage($version)
     {
     	$totalPicks	= $this->container->get('lolapi.manager.participant')->countByVersion($version);
     	$itemPicks	= $this->container->get('lolapi.manager.participant')->countByVersionByItem($version, $this->item);
@@ -28,7 +33,7 @@ class ItemStats
     		: number_format(100 * $itemPicks / $totalPicks, 2);
     }
 
-    public function getPurchase($version)
+    public function _getPurchase($version)
     {
         return 100;
     }
@@ -45,7 +50,7 @@ class ItemStats
         return $champions;
     }
 
-    public function getChampionUsage($version, Champion $champion)
+    public function _getChampionUsage($version, Champion $champion)
     {
         $championPicks  = $this->container->get('lolapi.manager.participant')->countByVersionByChampion($version, $champion);
         $useCount       = $this->container->get('lolapi.manager.item')->getUsage($champion, $version, $this->item);
