@@ -38,6 +38,12 @@
 			<a href="http://www.symfony.com">www.symfony.com</a>
 		</p>
 		<p>
+			<img src="{{ asset('bundles/dlcompareapapp/images/logo_highcharts.png') }}" />
+			{{ "default.about.thanks.highcharts" | trans }}<br />
+			<br />
+			<a href="http://www.highcharts.com">www.highcharts.com</a>
+		</p>
+		<p>
 			<img src="{{ asset('bundles/dlcompareapapp/images/logo_nb.png') }}" />
 			{{ "default.about.thanks.nb" | trans }}<br />
 			<br />
@@ -57,12 +63,12 @@
 			{{ "default.about.code.text" | trans }}<br />
 			<a href="https://github.com/AlepH-FR/apapp/" />github</a>
 		</p>
-		<p>
-			{{ "default.about.code.api" | trans }}<br />
-		</p>
-		<p>
-			{{ "default.about.code.methodology" | trans }}<br />
-		</p>
+		<div>
+			{{ "default.about.code.methodology" | trans | raw }}<br />
+		</div>
+		<div>
+			{{ "default.about.code.api" | trans | raw }}<br />
+		</div>
 	</div>
 </div>
 {% endblock %}

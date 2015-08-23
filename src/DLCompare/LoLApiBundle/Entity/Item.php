@@ -39,9 +39,23 @@ class Item
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=700)
      */
     private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="note", type="text", nullable=true)
+     */
+    private $note;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="flag", type="boolean", nullable=true)
+     */
+    private $flag;
 
     /**
      * @var string
@@ -170,6 +184,52 @@ class Item
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     * @return Item
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string 
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set flag
+     *
+     * @param boolean $flag
+     * @return Item
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+
+        return $this;
+    }
+
+    /**
+     * Get flag
+     *
+     * @return string 
+     */
+    public function getFlag()
+    {
+        return $this->flag;
     }
 
     /**

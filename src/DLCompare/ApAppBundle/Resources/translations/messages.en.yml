@@ -1,3 +1,6 @@
+menu: menu
+version: version
+total: total
 layout:
     menu:
         global: home
@@ -19,7 +22,7 @@ champion:
         info: 
             title: "Champions list and analysis"
             text: |
-                On this page you can find a filterable list of LoL champions (the orange circled ones being the champions tagged as Mage).<br />
+                On this page you can find a filterable list of LoL champions (the <span class="Mage">purple circled</span> ones being the champions tagged as Mage).<br />
                 You can click on each champion's image for more details !<br />
                 <br />
                 The stats given on the right of each champion on "expanded" mode are plus/minus between 5.14 and 5.11.
@@ -31,6 +34,8 @@ champion:
             mode: Display mode
             mode.expanded: Expanded
             mode.simple: Simple
+            modified: By modification
+            modified.flag: Modified champions only
         list:
             title: "Champions list"
             usage_diff: "use%"
@@ -61,8 +66,8 @@ item:
             version: 5.14 version
         usage:
             title: Usage
-        purchase:
-            title: Purchase
+        win:
+            title: Win rate
         champions:
             title: Champions using it the most on 35+ min games
     list:
@@ -70,25 +75,75 @@ item:
         info:
             title: "Items list and analysis"
             text: |
-                On this page you can find a filterable list of LoL items (the orange circled ones being the spell damage items).<br />
+                On this page you can find a filterable list of LoL items (the <span class="Mage">purple circled</span> ones being the spell damage items).<br />
                 You can click on each champion's image for more details !<br />
                 <br />
                 The stats given on the right of each item on "expanded" mode are plus/minus between 5.14 and 5.11.
         list:
             title: "Items list"
             usage_diff: "use%"
-            purchase_diff: "time"
+            win_diff: "win%"
         filter:
             title: Filter
             type: By type
             type.all: All
-            cost: By gold cost
+            cost: By minimum gold cost
             name: By name
             mode: Display mode
             mode.expanded: Expanded
             mode.simple: Simple
+            modified: By modification
+            modified.flag: Modified items only
 default:
+    analysis:
+        title: "Analysis"
+        data:
+            title: "About the data"
+            text: |
+                Here is some information about the data we've managed to parse from the Riot API.<br />
+                Don't forget when analysing our pages that Caitlyn & Jayce were unavailable during 5.11, and that Tham Kench wasn't yet available.<br />
+            last_update: "Analysis was last updated : August, 20th"
+            total_games: "Total games parsed"
+        champions:
+            text: "Champions"
+        type: 
+            Fighter:
+                text: |
+                    Fighter's category is a hard category to define. "AD champions with low range and not tanky enough to be considered as tanks". Some can be built Assassins (Poppy, Trynda, Vi), others tanks, others AP, others are team-oriented...<br />
+                    Overall, the champions who can jump in on a squishy and terminate him (Vi, Poppy, Warwick, Yasuo, Wukong, Aatrox, Hecarim) are having a better time.<br />
+                    Champions with no real "hard" engage are having a tougher one (Yorick, Olaf, Trynda, Pantheon, Udyr)
+            Assassin:
+                text: |
+                    Assassin is a hard category to analyse.<br />
+                    On one hand, AP assassins like Leblanc / Kassa / Akali are having a really hard time because they are not Rylai / Liandry type of champions.<br />
+                    On the other hand, AD assasins are pretty much the same between the 2 patchs.
+                    And on another (third?) hand, their is Nocturne.
+            Marksman:
+                text: |
+                    Marksman are having a better time, maybe because Teemo is considered as a champion of this category, but he can be also classified as a Mage, or as an Assassin. Overall, the statistics havn't changed a lot.<br />
+                    Some are having a better time because of their build moving between patches (Urgot, Twitch), other because of their adaptation to the meta (Sivir).<br />
+                    The really funny thing is that nearly all the champions who are picked more in 5.14 see their win rate drop, while all the champions who are less used see their win rate rise. It looks like summoners should stick to their strong champions !
+            Tank:
+                text: |
+                    3 champions have been upgraded thanks to the items modifications : Amumu because of Liandry / Rylai builds, Dr Mundo because he is an anti-AP beast, and Nasus for whatever reason.<br />
+                    On the other hand, Skarner is having a hard time : it looks like Skarner summoners are going more into damage builds, resulting in a drop of his win rate.
+            Mage:
+                text: |
+                    The global stats of Mage champions are quite the same between the 2 game versions. The global trend seems to be that Rylai / Liandry champions have been upgraded by the modifications 
+                    of the AP items, while the other ones tends to fall of due to the drop of Spell Damage on their core items (Zhonya, Luden). Rod Of Ages champions are taking are serious hit too.<br />
+                    It seems like summoners should play more Rylai / Liandry / Tear oriented champions like Rumble, Kennen, Morgana, etc.
+            Support:
+                text: |
+                    Supports took a huge blow between the 5.11 and the 5.14 with the worst win rate drop of any type of champions.<br />
+                    It looks like a lot of summoners went for more greedy AP builds on champions like Soraka or Zilean. 
+                    But ther main reason is that Tahm Kench made the win ratio of the supports fall off by himself : he only has a 44.77% win rate on 5.14
     index:
+        chart:
+            title: "Win & pick rate per champion"
+        tabs:
+            champions: Stats by champion
+            type: Stats by champions type
+            items: Stats by item
         type:
             title: "Version comparison by type of champion"
             name: "Type"
@@ -102,6 +157,8 @@ default:
             514: "5.14"
             511: "5.11"
             item_diff: items
+            filter:
+                all: Filter by type
     about:
         title: About ApApp
         about:
@@ -120,10 +177,25 @@ default:
                 Nuit Blanche has been our gaming team... for 15 years... They always supported us.
             riot: |
                 Because the game is fun, because the challenge is fun, and because it's rare to work on a project involving these two passions... thank you Riot !
+            highcharts: |
+                Highcharts is an amazing library to build custom charts in svg. The number of options and possibilities is just AMAZING ! You should try it.
         code:
             title: About the code
             text: |
                 The code of this project has mainly been made thanks to Symfony 2 (PHP Framework), Doctrine 2 (PHP ORM & DBAL), jQuery (js), Highcharts (js).
                 Symfony 2 vendors of the symfony-standard github project, and js vendors are the only pieces of code which weren't written exclusively for this project.
-            methodology:
-            api: 
+            methodology: |
+                The project is built with 2 separated bundles :<br />
+                <ul>
+                    <li>the main ApAppBundle which provides you have all these fine data analysis provided by the ...</li>
+                    <li>LoLApiBundle, which can be reused by anyone.</li>
+                </ul>
+                <br />
+                This last bundle has been built as a configurable module to access LoL APIs and map them into entities.<br />
+                <br />
+                Even if it has limited functionnalities for the moment (only maps data to ORM and not ODM, some missing service on the API), it's highly configurable and evolutive.<br />
+                Anyone wanting to help me develop this bundle, or use it for personnal projects can contact me. 
+                <br />
+                Given the delay of this challenge, i didn't had time to do more, but it can be an awesome tool for Symfony 2 users and LoL fans.
+            api: |
+                More details about the api can be found here : <a href="https://github.com/AlepH-FR/apapp/blob/master/src/DLCompare/LoLApiBundle/Resources/doc/index.md"><strong>here</strong></a>

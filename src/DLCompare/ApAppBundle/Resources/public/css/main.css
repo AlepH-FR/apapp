@@ -15,10 +15,9 @@ button { border: 0; background: YellowGreen; color: #333; cursor: pointer; }
 
 #background { position: fixed; z-index: 0; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.5; }
 #wrapper { position: absolute; z-index: 1; top: 0; left: 0; width: 100%; background: url('../images/bg/grid.png') #333; }
-#wrapper #header { position: fixed; z-index: 1000; background: rgba(9,44,45,0.3); height: 100px; width: 100%; box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.5); }
-#wrapper #main   { margin-top: 130px; }
-#wrapper #footer { position: static; z-index: 1000; bottom: 0; background: rgba(9,44,45,0.3); background-opacity: 0.5; height: 40px; width: 100%; color: gray; font-size: 10px; line-height: 20px; }
-
+#wrapper #header { background: rgba(9,44,45,0.3); height: 100px; width: 100%; box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.5); }
+#wrapper #main   { margin-top: 130px; min-height: 1000px; margin: 30px auto; }
+#wrapper #footer { line-height: 30px; position: static; z-index: 1000; bottom: 0; background: rgba(9,44,45,0.3); background-opacity: 0.5; height: 40px; width: 100%; color: gray; font-size: 10px; line-height: 20px; }
 .content { width: 900px; margin: 0 auto; }
 
 #header h1 { float: left; line-height: 100px; height: 100px; position: relative; }
@@ -35,14 +34,24 @@ button { border: 0; background: YellowGreen; color: #333; cursor: pointer; }
 #header ul.menu li { float: left; border-right: 1px solid white; height: 40px; margin: 30px 0; padding: 0 10px;  line-height: 40px; }
 #header ul.menu li.last { border-right: 1px solid transparent; }
     
-#main { min-height: 1000px; margin: 30px auto; }
+#header-small { display: none; background: rgba(9,44,45,0.3); height: 100px; width: 100%; box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.5); }
+#header-small h1 { float: left; line-height: 30px; height: 100px; margin: 30px;}
+#header-small h1 span {
+  color: white;
+  font-family: Righteous;
+  font-size: 30px;
+  text-shadow: 5px 0 0 #000, -5px 0 0 #000, 0 5px 0 #000, 0 -5px 0 #000, 3px 3px #000, -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 0 0 25px orange;
+}
+#header-small div.menu-placeholder { float: right; line-height: 30px; height: 100px; margin: 30px 0; padding: 0 30px; cursor: pointer; }
+#header-small div.menu-placeholder ul.menu { display: none; position: absolute; top: 100px; left: 0; width: 100%; z-index:1000; }
+#header-small div.menu-placeholder ul.menu li { width: 100%; border-bottom: 1px solid white; background: rgba(9,44,45,0.7); height: 30px; margin: 5px 0; padding: 0 10px; line-height: 30px; }
 
-#footer { line-height: 30px; }
-
-.block { ; }
+.block { position: relative; }
 .block h2 { padding: 5px; color: #ff9c00; border-bottom: 1px solid rgba(9,44,45,0.8); background: transparent; box-shadow: 0px 3px 0px 0px rgba(9, 44, 45, 0.5); }
 .block .inner-block { background: rgba(44,44,44,0.9); }
 .block .inner-block p { min-height: 60px; padding: 15px; clear: both; line-height: 15px; }
+.block.code .inner-block div { min-height: 60px; padding: 15px; clear: both; line-height: 15px; }
+.block.code .inner-block div ul { list-style: inside disc; }
 .block .inner-block p img { width: 60px; margin-right: 15px; float: left; }
 
 .item-list { ; }
@@ -110,6 +119,11 @@ form fieldset p textarea { float: left; width: 200px; height: 80px; font-size: 1
 form button { margin-left: 225px; width: 210px; font-size: 20px; padding: 5px; line-height: 30px; height: 40px; font-family: "Lobster", cursive; }
 form .error { color: red; display: block; margin-top: -27px; text-align: right;  width: 200px; }
 
+form.filter { position: absolute; right: 0px; top: 4px; }
+form.filter fieldset { ; }
+form.filter fieldset p { min-height: 0; padding:0; }
+form.filter fieldset p select { background:transparent; border:transparent; width:150px; color: orange; }
+
 #main img.author { border-radius: 50px; border: 2px solid rgba(9,44,45,0.8); }
 #main img.icon { float: none; margin: 0; width: auto; }
 
@@ -118,12 +132,12 @@ active, aura, unique, passive { font-weight: 700; }
 table { width: 900px; overflow: hidden; }
 table tr { height: 60px; }
 table tr.odd { background: url('/bundles/dlcompareapapp/images/bg/grid.png'); }
-table thead tr { height: 20px; background: rgba(204, 204, 204, 0.5); overflow: hidden; }
+table thead tr, table tfoot tr { height: 20px; background: rgba(204, 204, 204, 0.5); overflow: hidden; }
 table thead tr.sub { font-size: 10px; color: #ccc; }
 table thead tr.sub th { width: 60px; }
 table thead tr.first th { width: 180px; }
 table thead tr.first th.name { width: 175px; }
-table tr th { font-weight: 700; color: #ccc; overflow: hidden; height: 20px; border-bottom: 1px solid rgba(9, 44, 45, 0.5); vertical-align: middle; }
+table tr th, table tfoot tr td { font-weight: 700; color: #ccc; overflow: hidden; height: 20px; border-bottom: 1px solid rgba(9, 44, 45, 0.5); vertical-align: middle; }
 table tr td { width: 60px; padding: 5px; overflow: hidden; padding: 0px; text-align: center; vertical-align: middle; }
 table tr td img { width: 50px; display: block; margin-left: 5px; border: 3px solid; border-radius: 50px; }
 table tr td.avatar { width: 60px; }
@@ -131,6 +145,7 @@ table tr td.name { width: 115px; text-align: left; font-size: 12px; padding: 0 0
 table tbody tr td.primary { background: rgba(255, 156, 0, 0.1); }
 table tbody tr td.secondary { background: rgba(255, 156, 0, 0.1); }
 table thead tr th.end,
+table tfoot tr th.end,
 table tbody tr td.end,
 table tbody tr td.diff { border-right: 1px solid rgba(9, 44, 45, 0.5); }
 table.tablesorter thead tr .tablesorter-header { background: url('/bundles/dlcompareapapp/images/ico/bg.gif') no-repeat center right; cursor: pointer; }
@@ -143,6 +158,46 @@ table.tablesorter thead tr .tablesorter-headerAsc { background-color: #ff9c00; }
 ul.tabs { width: 100%; height: 50px; margin: 30px 0;  }
 ul.tabs li { float: left; background: rgba(9, 44, 45, 0.7); border-radius: 10px; border: 2px solid transparent; padding: 10px 30px; height: 30px; line-height: 30px; margin-right: 15px; font-size: 18px; cursor: pointer; transition: background 1s; }
 ul.tabs li:hover { background: #ff9c00; }
-ul.tabs li.current { background: #ff9c00; border: 2px solid rgba(9, 44, 45, 1); }
+ul.tabs li.current { background: #ff9c00; border: 2px solid rgba(9, 44, 45, 1); text-shadow: 0px 0px 4px black; }
 
 .tab { display: none; }
+
+.Assassin { color: #FF0000; }
+.Assassin img { border-color: #FF0000 !important; }
+.Fighter { color: orange; }
+.Fighter img { border-color: orange !important; }
+.SpellDamage,.Mage { color: #96f; }
+.SpellDamage img,.Mage img { border-color: #96f !important; }
+.Marksman { color: green; }
+.Marksman img { border-color: green !important; }
+.Support { color: white; }
+.Support img { border-color: white !important; }
+.Tank { color: black; }
+.Tank img { border-color: black !important; }
+
+.ui-tooltip { max-width: 500px; }
+
+.note h2 {
+    border: 0 none;
+    box-shadow: 0 0 0 0 white;
+    font-size: 80px;
+    margin-top: 0;
+    position: relative;
+    top: 35px;
+}
+.note .inner-block p {
+    min-height: 0;
+}
+.notice { font-style:italic; font-size:10px; color: #ccc; }
+
+@media only screen and (max-width: 899px) { 
+	.content { width: 100%; }
+	table { width: 100%; }
+	.left, .right { width: 100% !important; margin: 0; }
+	ol { display: none; }
+	#header { display: none; }
+	#header-small { display: block; }
+	h2 { font-size: 16px; }
+	ul.tabs { margin: 30px 0 0; height: 30px; }
+	ul.tabs li { line-height: 16px; font-size: 12px; padding: 5px 10px; height: auto; }
+}

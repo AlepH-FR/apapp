@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use DLCompare\ApAppBundle\Stats\ChampionStats;
+use DLCompare\CacheBundle\Configuration\ActionCache;
 
 class ChampionController extends Controller
 {

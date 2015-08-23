@@ -58,7 +58,7 @@ class ItemController extends Controller
             'stats'    => $stats,
             'data'     => [
                 '511' => $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.11.1', 'itemData' => "all"]),
-                '514' => $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.11.1', 'itemData' => "all"])
+                '514' => $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.14.1', 'itemData' => "all"])
             ]
         ];
     }

@@ -8,7 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection as Collection;
 /**
  * Game
  *
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="idx_distant_id", columns={"distant_id"})})
+ * @ORM\Table(
+ *      indexes={
+ *          @ORM\Index(name="idx_version", columns={"version"}),
+ *          @ORM\Index(name="idx_region", columns={"region"}),
+ *          @ORM\Index(name="idx_queue_type", columns={"queue_type"}),
+ *          @ORM\Index(name="idx_distant_id", columns={"distant_id"})
+ *      }
+ * )
  * @ORM\Entity(repositoryClass="DLCompare\LoLApiBundle\Model\GameRepository")
  */
 class Game
@@ -39,14 +46,14 @@ class Game
     /**
      * @var string
      *
-     * @ORM\Column(name="platform_id", type="string", length=255)
+     * @ORM\Column(name="platform_id", type="string", length=255, nullable=true)
      */
     private $platformId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="match_type", type="string", length=255)
+     * @ORM\Column(name="match_type", type="string", length=255, nullable=true)
      */
     private $matchType;
 
@@ -60,14 +67,14 @@ class Game
     /**
      * @var string
      *
-     * @ORM\Column(name="season", type="string", length=255)
+     * @ORM\Column(name="season", type="string", length=255, nullable=true)
      */
     private $season;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -88,28 +95,28 @@ class Game
     /**
      * @var string
      *
-     * @ORM\Column(name="match_mode", type="string", length=255)
+     * @ORM\Column(name="match_mode", type="string", length=255, nullable=true)
      */
     private $matchMode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="data", type="text")
+     * @ORM\Column(name="data", type="text", nullable=true)
      */
     private $data;
 
     /**
      * @var Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Participant", mappedBy="game", cascade={"remove"}, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="Participant", mappedBy="game", cascade={"remove"}, fetch="EXTRA_LAZY", orphanRemoval=true)
      */
     private $participants;
 
     /**
      * @var Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Champion", inversedBy="bans", cascade={"remove"}, fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Champion", inversedBy="bans", cascade={"remove"}, fetch="EXTRA_LAZY", orphanRemoval=true)
      * @ORM\JoinTable(name="game_bans")
      */
     private $bans;

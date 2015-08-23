@@ -17,8 +17,8 @@
 		</p>
         <ol>
             <li class="last">
-                <span>{{ "item.list.list.purchase_diff" | trans }} +/-</span>
-                <strong>{{ stats.purchase('5.14') - stats.purchase('5.11') }}</strong>
+                <span>{{ "item.list.list.win_diff" | trans }} +/-</span>
+                <strong>{{ stats.winRate('5.14') - stats.winRate('5.11') }}</strong>
             </li>
             <li>
                 <span>{{ "item.list.list.usage_diff" | trans }} +/-</span>
@@ -28,6 +28,19 @@
         <div class="spacer"></div>
 	</div>
 </div>
+
+{% if item.note %}
+<div class="row">
+    <div class="block note">
+        <h2>&ldquo;</h2>
+        <div class="inner-block">
+            <p>
+                {{ item.note }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <div class="row">
 	<div class="left half block difference">
@@ -64,11 +77,11 @@
 		</div>
 	</div>
 
-	<div class="right half block purchase">
-        <h2>{{ "item.details.purchase.title" | trans }}</h2>
+	<div class="right half block wn">
+        <h2>{{ "item.details.win.title" | trans }}</h2>
 		<div class="inner-block">
 			<div class="chart-container">
-				<div id="purchase-chart"></div>
+				<div id="winrate-chart"></div>
 			</div>
 		</div>
 	</div>
@@ -123,6 +136,42 @@ $(function ()
         series: [{
             name: 'Picks',
             data: [{{ stats.usage('5.11') }},{{ stats.usage('5.14') }}]
+        }]
+    });
+
+    $('#winrate-chart').highcharts(
+    {
+        chart: {
+            type: 'bar',
+            height: 200
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['5.11', '5.14']
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: 'Win rates'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Wins',
+            data: [{{ stats.winRate('5.11') }}, {{ stats.winRate('5.14') }}]
+        }, {
+            name: 'Loss',
+            data: [{{ 100-stats.winRate('5.11') }}, {{ 100-stats.winRate('5.14') }}]
         }]
     });
 

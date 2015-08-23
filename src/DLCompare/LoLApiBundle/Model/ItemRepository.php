@@ -69,4 +69,23 @@ class ItemRepository extends EntityRepository
             ->getSingleScalarResult()
 		;				
 	}
+
+	/**
+	 * Find items matching a minimum gold cost
+	 * 
+	 * @param integer $minGold
+	 * @return array(DLCompare\LoLApiBundle\Entity\Item)
+	 */
+	public function findMostExpansive($minGold = 2000)
+	{
+		$qb = $this->createQueryBuilder('i');
+		$ex = $qb->expr();
+
+		return $qb
+			->where($ex->gt('i.cost', $ex->literal($minGold)))
+			->orderBy('i.name', 'ASC')
+            ->getQuery()
+            ->execute()
+		;			
+	}
 }

@@ -11,6 +11,7 @@ apapp.item_list.prototype.init = function()
 	$('#type').change(function() { that.filter(); })
 	$('#cost').change(function() { that.filter(); })
 	$('#name').keyup(function() { that.filter(); })
+	$('#modified').change(function() { that.filter(); })
 	$('#expanded').change(function() { that.toggleExpanded(); })
 
 	this.filter();	
@@ -27,11 +28,16 @@ apapp.item_list.prototype.filter = function()
 	var type = $('#type').val();
 	var cost = $('#cost').val();
 	var name = $('#name').val();
+	var flag = $('#modified').val();
 
 	var selector = "";
 	if(type)
 	{
 		selector += "." + type;
+	}
+	if(flag)
+	{
+		selector += "." + flag;
 	}
 
 	$('ul#item-list > li').show();

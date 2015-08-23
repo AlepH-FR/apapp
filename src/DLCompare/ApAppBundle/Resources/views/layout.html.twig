@@ -55,6 +55,26 @@
                 </div>
             </div>
 
+            <div id="header-small">
+                <div class="content">
+                    <h1>
+                        <a href="{{ url('homepage') }}">
+                            <span>ApApp</span>
+                         </a>
+                    </h1>
+                    <div class="menu-placeholder">
+                        <span>{{ "menu" | trans }}</span>
+                        <ul class="menu">
+                            <li class="active"><a href="{{ url('homepage') }}">{{ "layout.menu.global" | trans }}</a></li>
+                            <li class=""><a href="{{ url('champion_list') }}">{{ "layout.menu.champions" | trans }}</a></li>
+                            <li class=""><a href="{{ url('item_list') }}">{{ "layout.menu.items" | trans }}</a></li>
+                            <li class=""><a href="{{ url('analysis') }}">{{ "layout.menu.analysis" | trans }}</a></li>
+                            <li class="last"><a href="{{ url('about') }}">{{ "layout.menu.about" | trans }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div id="main" class="content">
                 {% block main %}{% endblock %}
             </div>
@@ -73,6 +93,10 @@
             $(function() {
                 $(document).tooltip();
             });
+            $('#header-small .menu-placeholder span').click(function()
+            {
+                $('#header-small ul.menu').toggle();
+            })
         </script>
     </body>
 </html>

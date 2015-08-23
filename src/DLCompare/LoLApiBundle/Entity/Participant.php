@@ -74,28 +74,29 @@ class Participant
     /**
      * @var Game
      * 
-     * @ORM\ManyToOne(targetEntity="Game", inversedBy="participant")
+     * @ORM\ManyToOne(targetEntity="Game", inversedBy="participants", cascade={"remove"})
+     * @ORM\JoinColumn(name="game_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $game;
 
     /**
      * @var Champion
      * 
-     * @ORM\ManyToOne(targetEntity="Champion", inversedBy="participant")
+     * @ORM\ManyToOne(targetEntity="Champion", inversedBy="participants", cascade={"remove"})
      */
     private $champion;
 
     /**
      * @var Summoner
      * 
-     * @ORM\ManyToOne(targetEntity="Summoner", inversedBy="participant")
+     * @ORM\ManyToOne(targetEntity="Summoner", inversedBy="participants", cascade={"remove"})
      */
     private $summoner;
 
     /**
      * @var Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Item", inversedBy="items", cascade={"remove"}, fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Item", inversedBy="participants", cascade={"remove"}, fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="participant_items")
      */
     private $items;

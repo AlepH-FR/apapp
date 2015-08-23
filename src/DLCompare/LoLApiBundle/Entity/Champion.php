@@ -58,6 +58,20 @@ class Champion
     private $tags;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="note", type="text", nullable=true)
+     */
+    private $note;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="flag", type="boolean", nullable=true)
+     */
+    private $flag;
+
+    /**
      * @var Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Participant", mappedBy="champion", cascade={"remove"}, fetch="EXTRA_LAZY")
@@ -204,6 +218,52 @@ class Champion
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     * @return Champion
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string 
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set flag
+     *
+     * @param boolean $flag
+     * @return Champion
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+
+        return $this;
+    }
+
+    /**
+     * Get flag
+     *
+     * @return string 
+     */
+    public function getFlag()
+    {
+        return $this->flag;
     }
 
     /**

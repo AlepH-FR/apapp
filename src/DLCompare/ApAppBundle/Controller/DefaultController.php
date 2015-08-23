@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DLCompare\ApAppBundle\Stats\GameStats;
 use DLCompare\ApAppBundle\Stats\ChampionStats;
 use DLCompare\ApAppBundle\Stats\TypeStats;
+use DLCompare\ApAppBundle\Stats\ItemStats;
 
 class DefaultController extends Controller
 {
@@ -41,13 +42,22 @@ class DefaultController extends Controller
                 }
             }
         }
-
         sort($types);
+
+        $repo  = $this->get('lolapi.manager.item');
+        $items = $repo->findMostExpansive(2500);
+        $itemStats = [];
+        foreach($items as $item)
+        {
+            $itemStats[$item->getId()] = new ItemStats($item, $this->get('service_container'));
+        }
         
         return [
             'types'     => $types,
             'champions' => $champions,
             'stats'     => $stats,
+            'items'     => $items,
+            'itemStats' => $itemStats,
         ];
     }
 
@@ -67,7 +77,7 @@ class DefaultController extends Controller
     public function analysisAction()
     {
         $repo  = $this->get('lolapi.manager.champion');
-        $champions = $repo->findBy([]);
+        $champions = $repo->findBy([], ['name' => 'ASC']);
 
         $types = [];
         foreach($champions as $champion)
@@ -79,6 +89,7 @@ class DefaultController extends Controller
             {
                 $types[$tag] = [
                     'name'      => $tag,
+                    'stats'     => new TypeStats($tag, $this->get('service_container')),
                     'champions' => []
                 ];
             }

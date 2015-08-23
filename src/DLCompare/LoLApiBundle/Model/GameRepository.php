@@ -166,5 +166,59 @@ class GameRepository extends EntityRepository
 		;
 
 		return $result;
+    }     
+
+	/**
+	 * Counts number of games for a specified region, version and mode
+	 * 
+	 * @param string $version
+	 * @param string $region
+	 * @param string $mode
+	 * @return integer
+	 */
+	public function countByVersionByRegionByQueue($version, $region, $mode)
+    {
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(g)')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->eq('g.region', $ex->literal($region)))
+			->andWhere($ex->like('g.queueType', $ex->literal($mode . '%')))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;
     }
+    
+
+	/**
+	 * Counts number of games for a specified region, version and mode
+	 * 
+	 * @param string $version
+	 * @param string $region
+	 * @param integer $offset
+	 * @param integer $limit
+	 * @return array(DLCompare\LoLApiBundle\Entity\Game)
+	 */
+	public function findByVersionByRegion($version, $region, $offset = 0, $limit = 20000)
+	{		
+		$qb = $this->createQueryBuilder('g');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->eq('g.region', $ex->literal($region)))
+	        ->addOrderBy('g.id', 'ASC')
+	        ->setFirstResult($offset)
+	        ->setMaxResults($limit)
+			->getQuery()
+			->execute()
+		;
+
+		return $result;
+	}
+
 }

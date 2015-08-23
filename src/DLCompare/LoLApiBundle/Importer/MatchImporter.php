@@ -59,16 +59,16 @@ class MatchImporter implements ImporterInterface
     	$game
     		->setDistantId($matchId)
     		->setRegion($region)
-    		->setCreatedAt($createdAt)
+    		//->setCreatedAt($createdAt)
     		->setDuration($data->matchDuration)
-    		->setMatchMode($data->matchMode)
-    		->setMatchType($data->matchType)
+    		//->setMatchMode($data->matchMode)
+    		//->setMatchType($data->matchType)
     		->setQueueType($data->queueType)
     		->setVersion($data->matchVersion)
-    		->setSeason($data->season)
-    		->setPlatformId($data->platformId)
-    		->setData(serialize($data));
-
+    		//->setSeason($data->season)
+    		//->setPlatformId($data->platformId)
+    		//->setData(serialize($data))
+        ;
     	// -- Bans
     	foreach($data->teams as $team)
     	{

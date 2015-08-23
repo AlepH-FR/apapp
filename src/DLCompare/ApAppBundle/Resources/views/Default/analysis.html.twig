@@ -11,13 +11,10 @@
 	<h2>{{ "default.analysis.data.title" | trans }}</h2>
 	<div class="inner-block">
 		<p>
-			{{ "default.analysis.data.text" | trans }}
-			Here is some information about the data we've managed to parse from the Riot API.<br />
-			Don't forget when analysing our pages that Caitlyn & Jayce were unavailable during 5.11, and that Tham Kench wasn't yet available.<br />
+			{{ "default.analysis.data.text" | trans | raw }}
 			<br />
-			{{ "default.analysis.data.last_update" | trans }}
-			{{ "default.analysis.data.total_games" | trans }}
-			Total games parsed : <strong>{{ total }}</strong>.
+			{{ "default.analysis.data.last_update" | trans }}<br/>.
+			{{ "default.analysis.data.total_games" | trans }} : <strong>{{ total }}</strong>.
 		</p>
 		<table>
 			<thead>
@@ -98,15 +95,22 @@
 	<div class="inner-block">
 		<p>
 			{{ "default.analysis.champions.text" | trans }} : 
-			{% for champion in type.champions %}
-				<a href="{{ url('champion_details', {'id': champion.id}) }}">{{ champion.name }}</a>
-				{% if not loop.last %},{% endif %}
-			{% endfor %}
+			{% for champion in type.champions %}<a href="{{ url('champion_details', {'id': champion.id}) }}">{{ champion.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}<br />
+			<br />
+			{{ "default.index.champion.winrate" | trans }} : <a>{{ (type.stats.winRate('5.14') - type.stats.winRate('5.11'))|number_format(2) }}</a><br />
+			<br />
+			{{ "default.index.champion.kda" | trans }} : <a>{{ (type.stats.kda('5.14') - type.stats.kda('5.11'))|number_format(2) }}</a><br />
 		</p>
 		<p>
 			{% set text = "default.analysis.type." ~ type.name ~ ".text" %}
-			{{ text | trans }}
+			{{ text | trans | raw }}
 		</p>
+		{% for champion in type.champions if champion.note %}
+		<p>
+			<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" alt="{{ champion.name }}" title="{{ champion.name }}" />
+			{{ champion.note }}<br />
+		</p>
+		{% endfor %}
 	</div>
 </div>
 {% endfor %}

@@ -22,24 +22,37 @@
         <ol>
             <li class="last">
                 <span>{{ "champion.list.list.winrate_diff" | trans }} +/-</span>
-                <strong>{{ stats.winRate('5.14') - stats.winRate('5.11') }}</strong>
+                <strong>{{ (stats.winRate('5.14') - stats.winRate('5.11'))|number_format(2) }}</strong>
             </li>
             <li>
                 <span>{{ "champion.list.list.gold_diff" | trans }} +/-</span>
-                <strong>{{ stats.gold('5.14') - stats.gold('5.11') }}</strong>
+                <strong>{{ (stats.gold('5.14') - stats.gold('5.11'))|number_format(2) }}</strong>
             </li>
             <li>
                 <span>{{ "champion.list.list.kda_diff" | trans }} +/-</span>
-                <strong>{{ stats.kda('5.14') - stats.kda('5.11') }}</strong>
+                <strong>{{ (stats.kda('5.14') - stats.kda('5.11'))|number_format(2) }}</strong>
             </li>
             <li>
                 <span>{{ "champion.list.list.usage_diff" | trans }} +/-</span>
-                <strong>{{ stats.usage('5.14') - stats.usage('5.11') }}</strong>
+                <strong>{{ (stats.usage('5.14') - stats.usage('5.11'))|number_format(2) }}</strong>
             </li>
         </ol>
         <div class="spacer"></div>
 	</div>
 </div>
+
+{% if champion.note %}
+<div class="row">
+    <div class="block note">
+        <h2>&ldquo;</h2>
+        <div class="inner-block">
+            <p>
+                {{ champion.note }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <div class="row">
 	<div class="left half block usage">
@@ -160,7 +173,7 @@
 $(function () {
     $('ol li strong').each(function()
     {
-        var color = (parseInt($(this).html()) >= 0) ? "green" : "red";
+        var color = (parseFloat($(this).html()) >= 0) ? "green" : "red";
         $(this).css('color', color);
     });
 

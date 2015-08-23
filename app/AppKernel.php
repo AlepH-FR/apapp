@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new DLCompare\ApAppBundle\DLCompareApAppBundle(),
             new DLCompare\LoLApiBundle\DLCompareLoLApiBundle(),
+            new DLCompare\CacheBundle\DLCompareCacheBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

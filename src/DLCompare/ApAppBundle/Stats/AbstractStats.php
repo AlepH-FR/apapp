@@ -6,17 +6,20 @@ abstract class AbstractStats
 {
 	protected $container; 
 
+    protected $refresh = false;
+
     public function __call($name, array $arguments)
     {
         $method = '_' . $name;
         $file   = $this->getCacheFilename($method, $arguments);
 
-        if(!file_exists($file) || (time() > filemtime($file) + 86400))
+        if($this->refresh || !file_exists($file))
         {
             if(!method_exists($this, $method))
             {
                 $method = '_get' . ucfirst($name);
             }
+
             $result = call_user_func_array([$this, $method], $arguments);
             file_put_contents($file, $result);
             return $result;
@@ -28,6 +31,11 @@ abstract class AbstractStats
     }
 
     abstract public function getCacheId();
+
+    public function setRefresh($refresh)
+    {
+        $this->refresh = $refresh;
+    }
 
     protected function getCacheKey($method, $arguments)
     {

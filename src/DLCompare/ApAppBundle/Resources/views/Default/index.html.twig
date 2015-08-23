@@ -7,14 +7,85 @@
 <script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/vendor/highcharts-more.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/highcharts_skin.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/tabs.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dlcompareapapp/js/index.js') }}"></script>
 {% endblock %}
 
 {% block main %}
 
+<div class="block">
+    <h2>{{ "default.index.chart.title" | trans }}</h2>
+    <div class="inner-block">
+        <div id="champion-chart">
+        </div>
+    </div>
+</div>
+
 <ul class="tabs">
     <li class="champions">{{ "default.index.tabs.champions" | trans }}</li>
     <li class="type">{{ "default.index.tabs.type" | trans }}</li>
+    <li class="items">{{ "default.index.tabs.items" | trans }}</li>
 </ul>
+
+<div class="row notice">
+* underline means item or champion has been changed between 5.11 and 5.14 
+</div>
+
+<div class="block info tab" id="items">
+    <h2>{{ "default.index.type.title" | trans }}</h2>
+    <div class="inner-block">
+        <table id="item-list" class="tablesorter">
+            <thead>
+                <tr class="first">
+                    <th rowspan="2" colspan="2" class="name end">{{ "default.index.champion.name" | trans }}</th>
+                    <th colspan="3" class="{sorter: false} end">{{ "default.index.champion.pickrate" | trans }}</th>
+                    <th colspan="3" class="{sorter: false} end">{{ "default.index.champion.winrate" | trans }}</th>
+                </tr>
+                <tr class="sub">
+                    <th>{{ "default.index.champion.514" | trans }}</th>
+                    <th>{{ "default.index.champion.511" | trans }}</th>
+                    <th class="end">+/-</th>
+                    <th>{{ "default.index.champion.514" | trans }}</th>
+                    <th>{{ "default.index.champion.511" | trans }}</th>
+                    <th class="end">+/-</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td class="avatar {{ item.tags|replace({',': ' '}) }}">
+                        <img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" />
+                    </td>
+                    <td class="name end">
+                        <a href="{{ url('item_details', {'id':item.id}) }}">
+                            {% if item.flag %}<u>{% endif %}
+                            {{ item.name }}
+                            {% if item.flag %}</u>{% endif %}
+                        </a>
+                    </td>
+                    <td>
+                        {{ attribute(itemStats,item.id).usage('5.14') }}
+                    </td>
+                    <td>
+                        {{ attribute(itemStats,item.id).usage('5.11') }}
+                    </td>
+                    <td class="diff">
+                        {{ (attribute(itemStats,item.id).usage('5.14') - attribute(itemStats,item.id).usage('5.11'))|number_format(2) }}
+                    </td>
+                    <td>
+                        {{ attribute(itemStats,item.id).winRate('5.14') }}
+                    </td>
+                    <td>
+                        {{ attribute(itemStats,item.id).winRate('5.11') }}
+                    </td>
+                    <td class="diff">
+                        {{ (attribute(itemStats,item.id).winRate('5.14') - attribute(itemStats,item.id).winRate('5.11'))|number_format(2) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div class="block info tab" id="type">
     <h2>{{ "default.index.type.title" | trans }}</h2>
@@ -96,6 +167,18 @@
 </div>
 
 <div class="block info tab" id="champions">
+    <form class="filter">
+        <fieldset>
+            <p>
+                <select>
+                    <option value="champion">{{ "default.index.champion.filter.all" | trans }}</option>
+                    {% for type in types %}
+                    <option value="{{ type.name }}" class="{{ type.name }}">{{ type.name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </fieldset>
+    </form>
     <h2>{{ "default.index.champion.title" | trans }}</h2>
     <div class="inner-block">
         <table id="champion-list" class="tablesorter">
@@ -125,12 +208,14 @@
             <tbody>
                 {% for champion in champions %}
                 <tr class="{% if loop.index0 is odd %}odd{% else %}even{% endif %}">
-                    <td class="avatar {{ champion.tags|split(',')[0] }}">
+                    <td class="avatar champion {{ champion.tags|split(',')[0] }}">
                         <img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" />
                     </td>
                     <td class="name end">
                         <a href="{{ url('champion_details', {'id':champion.id}) }}">
+                            {% if champion.flag %}<u>{% endif %}
                             {{ champion.name }}
+                            {% if champion.flag %}</u>{% endif %}
                         </a>
                     </td>
                     <td>
@@ -173,41 +258,125 @@
                 {% endfor %}
             </tbody>
         </table>
-        <script type="text/javascript">
-            $(document).ready(function() 
-            { 
-                $(".tablesorter").tablesorter({
-                    widgets : ["zebra", "columns"]
-                });
-
-                $(".tablesorter").bind("sortEnd", function() 
-                {   
-                    $(this).find('tbody tr').removeClass('odd');
-                    $(this).find('tbody tr:odd').addClass('odd');
-                });
-
-                $('td.diff').each(function()
-                {
-                    var color = (parseFloat($(this).html()) >= 0) ? "green" : "red";
-                    $(this).css('color', color);
-                }); 
-            }); 
-        </script>
     </div>
 </div>
 
-<style type="text/css">
-.Assassin { color: #FF0000; }
-.Assassin img { border-color: #FF0000 !important; }
-.Fighter { color: #FF4000; }
-.Fighter img { border-color: #FF4000 !important; }
-.Mage { color: #96f; }
-.Mage img { border-color: #96f !important; }
-.Marksman { ; }
-.Marksman img { border-color: white !important; }
-.Support { color: white; }
-.Support img { border-color: white !important; }
-.Tank { color: #61210B; }
-.Tank img { border-color: #61210B !important; }
-</style>
+<script type="text/javascript">
+    chart = $('#champion-chart').highcharts(
+    {
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy',
+            panning: true,
+            panKey: 'shift'
+        },
+
+        title: {
+            text: ''
+        },
+
+        subtitle: {
+            text: 'Click and drag to zoom in. Hold down shift key to pan.',
+            style: { "text-transform": "none" }
+        },
+
+        xAxis: {
+            title: {
+                text: 'Usage rate'
+            },
+            min: 0,
+            plotLines: [{
+                value: 50,
+                width: 1,
+                zIndex: 6,
+                color: "#db8e01"
+            }]
+        },
+
+        yAxis: {
+            title: {
+                text: 'Win rate'
+            },
+            min: 35,
+            plotLines: [{
+                value: 50,
+                width: 1,
+                zIndex: 6,
+                color: "#db8e01"
+            }]
+        },
+
+        plotOptions: {
+            series: {
+                events: {
+                    legendItemClick: function () 
+                    {
+                        var chart = $('#champion-chart').highcharts();
+                        var series = chart.series;
+                        
+                        for(key in series)
+                        {
+                            if(series[key].visible) {
+                                series[key].hide();
+                            } else {
+                                series[key].show();
+                            }
+                        }
+                        return false;
+                    }
+                }
+            },
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)',
+                            radius: 30
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.name}<br><u>usage</u>: {point.x}%<br /><u>win rate</u>: {point.y}%',
+                    crosshairs: [true,true]
+                }
+            }
+        },
+
+        series: [{
+            name: '5.11',
+            visible: false,
+            data: [{% for champion in champions %}
+                {
+                    name: "{{ champion.name }}",
+                    x: {{ attribute(stats,champion.id).usage('5.11') }}, 
+                    y: {{ attribute(stats,champion.id).winRate('5.11') }}, 
+                    champTag: "{{ champion.tags|split(',')[0] }}",
+                    marker: {
+                        symbol: 'url(http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }})',
+                        height: 15,
+                        width: 15,
+                    }
+                }{% if not loop.last %},{% endif %}
+            {% endfor %}]
+        }, {
+            name: '5.14',
+            data: [{% for champion in champions %}
+                {
+                    name: "{{ champion.name }}",
+                    x: {{ attribute(stats,champion.id).usage('5.14') }}, 
+                    y: {{ attribute(stats,champion.id).winRate('5.14') }}, 
+                    champTag: "{{ champion.tags|split(',')[0] }}",
+                    marker: {
+                        symbol: 'url(http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }})',
+                        height: 15,
+                        width: 15,
+                    }
+                }{% if not loop.last %},{% endif %}
+            {% endfor %}]
+        }]
+    });
+</script>
 {% endblock %}

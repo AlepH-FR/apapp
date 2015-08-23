@@ -22,7 +22,7 @@
 		<div class="inner-block">
 			<ul id="item-list" class="expanded">
 				{% for champion in champions %}
-				<li class="champion {% for tag in champion.tags|split(',') %}{{ tag }} {% endfor %}">
+				<li class="champion {% for tag in champion.tags|split(',') %}{{ tag }} {% endfor %} {% if champion.flag %}flag{% endif %}">
 					<a href="{{ url('champion_details', {'id': champion.id}) }}">
 						<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" alt="{{ champion.name }}" title="{{ champion.name }}" />
 					</a>
@@ -34,19 +34,19 @@
 						<ol>
 							<li class="last">
 								<span>{{ "champion.list.list.winrate_diff" | trans }}</span>
-								<strong>{{ attribute(stats,champion.id).winRate('5.14') - attribute(stats,champion.id).winRate('5.11') }}</strong>
+								<strong>{{ (attribute(stats,champion.id).winRate('5.14') - attribute(stats,champion.id).winRate('5.11'))|number_format(2) }}</strong>
 							</li>
 							<li>
 								<span>{{ "champion.list.list.gold_diff" | trans }}</span>
-								<strong>{{ attribute(stats,champion.id).gold('5.14') - attribute(stats,champion.id).gold('5.11') }}</strong>
+								<strong>{{ (attribute(stats,champion.id).gold('5.14') - attribute(stats,champion.id).gold('5.11'))|number_format(2) }}</strong>
 							</li>
 							<li>
 								<span>{{ "champion.list.list.kda_diff" | trans }}</span>
-								<strong>{{ attribute(stats,champion.id).kda('5.14') - attribute(stats,champion.id).kda('5.11') }}</strong>
+								<strong>{{ (attribute(stats,champion.id).kda('5.14') - attribute(stats,champion.id).kda('5.11'))|number_format(2) }}</strong>
 							</li>
 							<li>
 								<span>{{ "champion.list.list.usage_diff" | trans }}</span>
-								<strong>{{ attribute(stats,champion.id).usage('5.14') - attribute(stats,champion.id).usage('5.11') }}</strong>
+								<strong>{{ (attribute(stats,champion.id).usage('5.14') - attribute(stats,champion.id).usage('5.11'))|number_format(2) }}</strong>
 							</li>
 						</ol>
 					</div>
@@ -72,8 +72,15 @@
 						<select name="type" id="type">
 							<option value="champion" >{{ "champion.list.filter.type.all" | trans }}</option>
 							{% for type in types %}
-							<option value="{{ type }}" {% if type == "Mage" %}selected="selected"{% endif %}>{{ type }}</option>
+							<option value="{{ type }}"  class="{{ type }}" {% if type == "Mage" %}selected="selected"{% endif %}>{{ type }}</option>
 							{% endfor %}
+						</select>
+					</p>
+					<p>
+						<label for="modified">{{ "champion.list.filter.modified" | trans }}</label>
+						<select name="modified" id="modified">
+							<option value="" selected="selected">{{ "champion.list.filter.type.all" | trans }}</option>
+							<option value="flag">{{ "champion.list.filter.modified.flag" | trans }}</option>
 						</select>
 					</p>
 					<p>

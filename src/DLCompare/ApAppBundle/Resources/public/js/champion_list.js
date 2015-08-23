@@ -10,6 +10,7 @@ apapp.champion_list.prototype.init = function()
 	var that = this;
 	$('#type').change(function() { that.filter(); })
 	$('#name').keyup(function() { that.filter(); })
+	$('#modified').change(function() { that.filter(); })
 	$('#expanded').change(function() { that.toggleExpanded(); })
 
 	this.filter();
@@ -39,9 +40,15 @@ apapp.champion_list.prototype.filter = function()
 {
 	var type = $('#type').val();
 	var name = $('#name').val();
+	var flag = $('#modified').val();
 
 	var selector = "";
 	selector += "." + type;
+
+	if(flag)
+	{
+		selector += "." + flag;
+	}
 
 	$('ul#item-list > li').show();
 

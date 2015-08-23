@@ -8,8 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use DLCompare\LoLApiBundle\Api\Exception\RateLimtiExceededException;
-
 class ImporterCommand extends ContainerAwareCommand
 {   
     /**
@@ -45,7 +43,9 @@ class ImporterCommand extends ContainerAwareCommand
 
         $versions   = ['5.14','5.11'];
         $modes      = ['RANKED_SOLO','NORMAL_5X5'];
-        $regions    = ['eune', 'euw', 'kr', 'lan', 'las', 'na', 'oce', 'ru', 'tr'];
+        $regions    = ['br', 'eune', 'euw', 'kr', 'lan', 'las', 'na', 'oce', 'ru', 'tr'];
+
+        $manager    = $this->getContainer()->get('lolapi.manager.game');
 
         foreach($versions as $version)
         {
@@ -59,6 +59,11 @@ class ImporterCommand extends ContainerAwareCommand
                     $json = json_decode(file_get_contents($dir . '/' . $path));
                     
                     $output->writeln("\t" . '<comment>Importing <info>' . count($json) . '</info> matches from file <info>' . $path . '</info></comment>');
+
+                    $count = $manager->countByVersionByRegionByQueue($version, $region, $mode);
+                    if($count >= count($json)) { continue; }
+
+                    $json = array_slice($json, $count-1);
                     foreach($json as $matchId)
                     {
                         $this->getContainer()->get('lolapi.importer.factory')->getImporter('match')->import(['region' => $region, 'matchId' => $matchId]);

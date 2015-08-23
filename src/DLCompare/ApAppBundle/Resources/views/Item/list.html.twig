@@ -22,7 +22,7 @@
 		<div class="inner-block">
 			<ul id="item-list" class="expanded">
 				{% for item in items %}
-				<li class="{% for tag in item.tags|split(',') %}{{ tag }} {% endfor %}" data-cost="{{ item.cost }}">
+				<li class="{% for tag in item.tags|split(',') %}{{ tag }} {% endfor %} {% if item.flag %}flag{% endif %}" data-cost="{{ item.cost }}">
 					<a href="{{ url('item_details', {'id': item.id}) }}">
 						<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" alt="{{ item.name }}" title="{{ item.name }}<br />{{ item.description|raw }}" />
 					</a>
@@ -32,8 +32,8 @@
 						</div>
 						<ol>
 							<li class="last">
-								<span>{{ "item.list.list.purchase_diff" | trans }}</span>
-								<strong>{{ attribute(stats,item.id).purchase('5.14') - attribute(stats,item.id).purchase('5.11') }}</strong>
+								<span>{{ "item.list.list.win_diff" | trans }}</span>
+								<strong>{{ attribute(stats,item.id).winRate('5.14') - attribute(stats,item.id).winRate('5.11') }}</strong>
 							</li>
 							<li>
 								<span>{{ "item.list.list.usage_diff" | trans }}</span>
@@ -68,8 +68,15 @@
 						</select>
 					</p>
 					<p>
+						<label for="modified">{{ "item.list.filter.modified" | trans }}</label>
+						<select name="modified" id="modified">
+							<option value="">{{ "champion.list.filter.type.all" | trans }}</option>
+							<option value="flag" selected="selected">{{ "item.list.filter.modified.flag" | trans }}</option>
+						</select>
+					</p>
+					<p>
 						<label for="cost">{{ "item.list.filter.cost" | trans }}</label>
-						<input type="number" value="0" name="cost" id="cost" />
+						<input type="number" value="2500" name="cost" id="cost" />
 					</p>
 					<p>
 						<label for="expanded">{{ "item.list.filter.mode" | trans }}</label>

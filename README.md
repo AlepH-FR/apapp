@@ -42,4 +42,4 @@ Specials Thanks
 
 [1]: http://www.dlcompare.com
 [2]: http://www.symfony.com
-[3]: https://github.com/AlepH-FR/apapp/blob/2.8/src/DLCompare/LoLApiBundle/Resources/doc/index.md
+[3]: https://github.com/AlepH-FR/apapp/blob/master/src/DLCompare/LoLApiBundle/Resources/doc/index.md

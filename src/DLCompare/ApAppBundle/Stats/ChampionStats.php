@@ -136,3 +136,4 @@ class ChampionStats extends AbstractStats
         return $participant->getItems();
     }
 }
+
