@@ -96,9 +96,13 @@ class DefaultController extends Controller
             $types[$tag]['champions'][] = $champion;
         }
 
+        $repo  = $this->get('lolapi.manager.item');
+        $items = $repo->findMostExpansive(2500);
+
         return [
             'total' => $this->get('lolapi.manager.game')->count(),
             'stat'  => new GameStats($this->get('service_container')),
+            'items' => $items,
             'types' => $types,
         ];
     }

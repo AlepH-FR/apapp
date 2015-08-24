@@ -36,6 +36,7 @@ class ItemRepository extends EntityRepository
 			->andWhere($ex->notLike('i.tags', $ex->literal('%Trinket%')))
 			->andWhere($ex->notLike('i.name', $ex->literal('Enchantment%')))
 			->andWhere($ex->gt('g.duration', 35 * 60))
+			->andWhere($ex->gt('i.cost', $ex->literal(2000)))
             ->groupBy('i.id')
             ->orderBy('usage', 'DESC')
 			->setMaxResults($maxResults)

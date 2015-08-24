@@ -70,6 +70,7 @@ class StatsUpdaterCommand extends ContainerAwareCommand
                 foreach($stats->getMainChampions() as $champion)
                 {
                    $stats->getChampionUsage($version, $champion);
+                   $stats->getChampionWinrate($version, $champion);
                 }
             }
         }
@@ -120,6 +121,7 @@ class StatsUpdaterCommand extends ContainerAwareCommand
                 foreach($stats->getMainItems() as $item)
                 {
                    $stats->getItemUsage($version, $item);
+                   $stats->getItemWinrate($version, $item);
                 }
             }
         }

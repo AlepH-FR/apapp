@@ -109,12 +109,12 @@ class ChampionStats extends AbstractStats
 
     public function getMainItems()
     {
-        $items = $this->container->get('lolapi.manager.item')->getMainItems($this->champion, 12);
+        $items = $this->container->get('lolapi.manager.item')->getMainItems($this->champion, 8);
 
         usort($items, function($a, $b)
         {
-            return $a->getName() > $b->getName();
-        });
+            return $this->getItemUsage('5.14', $a) < $this->getItemUsage('5.14', $b);
+        });;
 
         return $items;
     }
@@ -127,6 +127,17 @@ class ChampionStats extends AbstractStats
         return ($championPicks == 0)
             ? 0
             : number_format(100 * $useCount / $championPicks, 2)
+        ;
+    }
+
+    public function _getItemWinrate($version, Item $item)
+    {
+        $championPicks  = $this->container->get('lolapi.manager.item')->getUsage($this->champion, $version, $item);
+        $wins           = $this->container->get('lolapi.manager.participant')->countWinsByVersionByChampionByItem($this->champion, $version, $item);
+
+        return ($championPicks == 0)
+            ? 0
+            : number_format(100 * $wins / $championPicks, 2)
         ;
     }
 

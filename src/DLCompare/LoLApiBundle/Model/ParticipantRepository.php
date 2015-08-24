@@ -167,6 +167,35 @@ class ParticipantRepository extends EntityRepository
 	}
 
 	/**
+	 * Counts number of wins of participants using an item AND a champion for a specified version
+	 * 
+	 * @param DLCompare\LoLApiBundle\Entity\Champion $champion
+	 * @param string $version
+	 * @param DLCompare\LoLApiBundle\Entity\Item $item
+	 * @return integer
+	 */
+	public function countWinsByVersionByChampionByItem(Champion $champion, $version, Item $item)
+	{
+		$qb = $this->createQueryBuilder('p');
+		$ex = $qb->expr();
+
+		$result = $qb
+			->select('COUNT(p)')
+			->leftJoin('p.game', 'g')
+			->leftJoin('p.items', 'i')
+			->leftJoin('p.champion', 'c')
+			->where($ex->like('g.version', $ex->literal($version . '%')))
+			->andWhere($ex->eq('c.id', $champion->getId()))
+			->andWhere($ex->eq('i.id', $item->getId()))
+			->andWhere($ex->eq('p.winner', $ex->literal(1)))
+			->getQuery()
+			->getSingleScalarResult()
+		;
+
+		return $result;			
+	}
+
+	/**
 	 * Counts number of wins of a champion tag (or role) for a specified version
 	 * 
 	 * @param string $version

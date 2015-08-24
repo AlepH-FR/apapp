@@ -50,7 +50,10 @@ class ItemStats extends AbstractStats
 
         usort($champions, function($a, $b)
         {
-            return $a->getName() > $b->getName();
+            $as = new ChampionStats($a, $this->container);
+            $bs = new ChampionStats($b, $this->container);
+            
+            return $as->getItemUsage('5.14', $this->item) < $bs->getItemUsage('5.14', $this->item);
         });
 
         return $champions;
@@ -67,4 +70,14 @@ class ItemStats extends AbstractStats
         ;
     }
 
+    public function _getChampionWinrate($version, Champion $champion)
+    {
+        $championPicks  = $this->container->get('lolapi.manager.item')->getUsage($champion, $version, $this->item);
+        $wins           = $this->container->get('lolapi.manager.participant')->countWinsByVersionByChampionByItem($champion, $version, $this->item);
+
+        return ($championPicks == 0)
+            ? 0
+            : number_format(100 * $wins / $championPicks, 2)
+        ;
+    }
 }

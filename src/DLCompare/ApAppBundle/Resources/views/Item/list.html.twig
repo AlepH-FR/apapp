@@ -33,11 +33,11 @@
 						<ol>
 							<li class="last">
 								<span>{{ "item.list.list.win_diff" | trans }}</span>
-								<strong>{{ attribute(stats,item.id).winRate('5.14') - attribute(stats,item.id).winRate('5.11') }}</strong>
+								<strong>{{ (attribute(stats,item.id).winRate('5.14') - attribute(stats,item.id).winRate('5.11'))|number_format(2) }}</strong>
 							</li>
 							<li>
 								<span>{{ "item.list.list.usage_diff" | trans }}</span>
-								<strong>{{ attribute(stats,item.id).usage('5.14') - attribute(stats,item.id).usage('5.11') }}</strong>
+								<strong>{{ (attribute(stats,item.id).usage('5.14') - attribute(stats,item.id).usage('5.11'))|number_format(2) }}</strong>
 							</li>
 						</ol>
 					</div>

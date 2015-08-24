@@ -48,6 +48,7 @@ button { border: 0; background: YellowGreen; color: #333; cursor: pointer; }
 
 .block { position: relative; }
 .block h2 { padding: 5px; color: #ff9c00; border-bottom: 1px solid rgba(9,44,45,0.8); background: transparent; box-shadow: 0px 3px 0px 0px rgba(9, 44, 45, 0.5); }
+.block h3 { color: #ff9c00; margin: 0 0 10px; }
 .block .inner-block { background: rgba(44,44,44,0.9); }
 .block .inner-block p { min-height: 60px; padding: 15px; clear: both; line-height: 15px; }
 .block.code .inner-block div { min-height: 60px; padding: 15px; clear: both; line-height: 15px; }
@@ -113,7 +114,7 @@ form fieldset p label { float: left; width: 229px; margin-right: 15px; text-alig
 form fieldset p input[type="text"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
 form fieldset p input[type="number"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
 form fieldset p input[type="password"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
-form fieldset p input[type="file"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px; line-height: 20px; }
+form fieldset p input[type="file"] { float: left; width: 229px; height: 20px; font-size: 16px; padding: 5px 5px 0; line-height: 20px; }
 form fieldset p select { float: left; width: 239px; height: 30px; font-size: 16px; padding: 5px; line-height: 20px; }
 form fieldset p textarea { float: left; width: 200px; height: 80px; font-size: 12px; padding: 5px; line-height: 20px; }
 form button { margin-left: 225px; width: 210px; font-size: 20px; padding: 5px; line-height: 30px; height: 40px; font-family: "Lobster", cursive; }
@@ -190,6 +191,10 @@ ul.tabs li.current { background: #ff9c00; border: 2px solid rgba(9, 44, 45, 1); 
 }
 .notice { font-style:italic; font-size:10px; color: #ccc; }
 
+.sub-menu { position:fixed; left: 361px; }
+.sub-menu ul { border-right: 1px dotted orange; padding-right: 5px; line-height:20px; width: 125px; }
+.sub-menu ul li.current a { color: white; }
+
 @media only screen and (max-width: 899px) { 
 	.content { width: 100%; }
 	table { width: 100%; }
@@ -200,4 +205,5 @@ ul.tabs li.current { background: #ff9c00; border: 2px solid rgba(9, 44, 45, 1); 
 	h2 { font-size: 16px; }
 	ul.tabs { margin: 30px 0 0; height: 30px; }
 	ul.tabs li { line-height: 16px; font-size: 12px; padding: 5px 10px; height: auto; }
+  ul.sub-menu { display: none; }
 }

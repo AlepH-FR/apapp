@@ -7,6 +7,16 @@
 {% endblock %}
 
 {% block main %}
+<div class="sub-menu">
+	<ul>
+		<li><a href="#data">{{ "default.analysis.data.title" | trans }}</a></li>
+		<li><a href="#champions">{{ "default.analysis.champions.title" | trans }}</a></li>
+		<li><a href="#items">{{ "default.analysis.items.title" | trans }}</a></li>
+		<li><a href="#global">{{ "default.analysis.global.title" | trans }}</a></li>
+	</ul>
+</div>
+
+<a name="data" class="anchor"></a>
 <div class="block analysis">
 	<h2>{{ "default.analysis.data.title" | trans }}</h2>
 	<div class="inner-block">
@@ -83,6 +93,7 @@
 	</div>
 </div>
 
+<a name="champions" class="anchor"></a>
 <ul class="tabs">
 	{% for type in types %}
 	<li class="{{ type.name }}">{{ type.name }}</li>
@@ -114,4 +125,64 @@
 	</div>
 </div>
 {% endfor %}
+
+
+<a name="items" class="anchor"></a>
+<div class="block analysis items">
+	<h2>{{ "default.analysis.items.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			{{ "default.analysis.items.text" | trans }}
+		</p>
+		{% for item in items if item.note %}
+		<p>
+			<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" alt="{{ item.name }}" title="{{ item.name }}" />
+			{{ item.note }}<br />
+		</p>
+		{% endfor %}
+	</div>
+</div>
+
+<a name="global" class="anchor"></a>
+<div class="block analysis items">
+	<h2>{{ "default.analysis.global.title" | trans }}</h2>
+	<div class="inner-block">
+		<p>
+			{{ "default.analysis.global.text" | trans }}
+		</p>
+	</div>
+</div>
+
+<script type="text/javascript">
+var left = (($('#wrapper').width() - 900) / 2) - 15 - $('.sub-menu').width();
+$('.sub-menu').css('left', left);
+
+function setCurrentSubMenuItem()
+{
+	var scrollTop = $(window).scrollTop();
+	var height = $(window).height();
+
+	var last_position = 2000;
+	var last_anchor = null;
+	$('.anchor').each(function() 
+	{
+		var offset = $(this).offset().top;
+		var position = offset - scrollTop;
+		if(position < 0 || position > height) { return; }
+		if(position < last_position)
+		{
+			last_position = position;
+			last_anchor = $('.anchor').index($(this));
+		}
+	});
+	var lis = $('div.sub-menu ul li').removeClass('current');
+	$(lis.get(last_anchor)).addClass('current');
+}
+setCurrentSubMenuItem();
+
+$(window).scroll(function() 
+{ 
+    setCurrentSubMenuItem();
+});
+</script>
 {% endblock %}

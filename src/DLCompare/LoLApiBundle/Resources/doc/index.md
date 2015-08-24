@@ -94,6 +94,8 @@ dlcompare_lolapi:
     database: none
 ```
 
+Each entity has its own repository in the Model directory. Many functions are provided to filter entries and to get refined data about champions, games, items, ...
+
 One day, we shall add also the ODM part too !
 
 Importer

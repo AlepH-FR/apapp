@@ -47,6 +47,8 @@ champion:
             title: Usage
         items:
             title: Items used for 35min+ games
+        items_winrate:
+            title: Win rates by items used
         winrate:
             title: Win rate
         gold:
@@ -70,6 +72,8 @@ item:
             title: Win rate
         champions:
             title: Champions using it the most on 35+ min games
+        champions_winrate:
+            title: Win rate of champions when using this item
     list:
         title: List of LoL Items
         info:
@@ -105,7 +109,12 @@ default:
             last_update: "Analysis was last updated : August, 20th"
             total_games: "Total games parsed"
         champions:
+            title: "Champions analysis"
             text: "Champions"
+        items:
+            title: "Items analysis"
+        global:
+            title: "Global analysis and conclusion"
         type: 
             Fighter:
                 text: |
@@ -174,7 +183,7 @@ default:
             symfony: |
                 Because Symfony 2 makes PHP developers feel like they were real developers !
             nb: |
-                Nuit Blanche has been our gaming team... for 15 years... They always supported us.
+                Nuit Blanche has been our gaming team... for 15 years... It's not a team any more. It's a family.
             riot: |
                 Because the game is fun, because the challenge is fun, and because it's rare to work on a project involving these two passions... thank you Riot !
             highcharts: |
@@ -184,10 +193,12 @@ default:
             text: |
                 The code of this project has mainly been made thanks to Symfony 2 (PHP Framework), Doctrine 2 (PHP ORM & DBAL), jQuery (js), Highcharts (js).
                 Symfony 2 vendors of the symfony-standard github project, and js vendors are the only pieces of code which weren't written exclusively for this project.
-            methodology: |
-                The project is built with 2 separated bundles :<br />
+            api: |
+                <h3>Code and API</h3>
+                The project is built with 3 separated bundles :<br />
                 <ul>
                     <li>the main ApAppBundle which provides you have all these fine data analysis provided by the ...</li>
+                    <li>A cache bundle... because the amount of data was huuuuuge !</li>
                     <li>LoLApiBundle, which can be reused by anyone.</li>
                 </ul>
                 <br />
@@ -196,6 +207,31 @@ default:
                 Even if it has limited functionnalities for the moment (only maps data to ORM and not ODM, some missing service on the API), it's highly configurable and evolutive.<br />
                 Anyone wanting to help me develop this bundle, or use it for personnal projects can contact me. 
                 <br />
-                Given the delay of this challenge, i didn't had time to do more, but it can be an awesome tool for Symfony 2 users and LoL fans.
-            api: |
+                Given the delay of this challenge, i didn't had time to do more, but it can be an awesome tool for Symfony 2 users and LoL fans.<br />
+                <br />
+                The module is highly configurable and the code well documented for developers to work with it with ease.<br />
                 More details about the api can be found here : <a href="https://github.com/AlepH-FR/apapp/blob/master/src/DLCompare/LoLApiBundle/Resources/doc/index.md"><strong>here</strong></a>
+            methodology: |
+                <h3>Methodology and timline</h3>
+                The project was started a few hours after the challenge was announced.<br />
+                <br />
+                We picked the AP Items Challenge, which was pretty straight forward compared to other themes, for some reasons :
+                <ul>
+                    <li>because we wanted to have fun on a more graphical project</li>
+                    <li>because we wanted to make a well-crafted state-of-the-art project</li>
+                    <li>because we wanted to make an configurable opensource module out of this challenge, enabling Symfony 2 users to explore the LoL API</li>
+                    <li>because we wanted to provide summoners (and ourselves) raw and refined data to help them pick the best champions with the best builds</li>
+                    <li>because we wanted to see the impact of the AP items on the Mage champions obviously, but we wanted to provide data about its effect on the other non-AP champions, to see how the meta moves... and it's pretty interesting !</li>
+                </ul>
+                Azi began to work on the design and logo while AlepH started to work on the architecture.<br />
+                <br />
+                Then AlepH started to create scripts to import the most data possible to get the most accurate, and executed them while he was integrating the design.<br />
+                <br />
+                After that, we built the pages, and thanks to the AWESOME Symfony2, Doctrine 2 and Highcharts, this was pretty fast. Because the data imported is pretty big (400k games means 4 millions game players, means ~24 millions items purchased), we had to use caching to fasten page processing.
+                Even if the statistical functions are part of the ApApp Bundle, we developped them so that it'll enrich the LoLApiBundle.<br />
+                The entity repositories are full of function enabling developers to access any kind of statistics based on the data in their own database. We hope it will help a lot.<br />
+                <br />
+                Eventually, we had enough time to work on the analysis of this data.<br />
+                Even if we could have gone for a global analysis, we thought that each champion having his own particularities, it would be better to get into the details and have an analysis for each champion.<br />
+                Everyone can reach his own conclusions given the data we provide, but we thought it could be helpful for users to have a faster way to see the changes in each champion and item.<br />
+

@@ -18,11 +18,11 @@
         <ol>
             <li class="last">
                 <span>{{ "item.list.list.win_diff" | trans }} +/-</span>
-                <strong>{{ stats.winRate('5.14') - stats.winRate('5.11') }}</strong>
+                <strong>{{ (stats.winRate('5.14') - stats.winRate('5.11'))|number_format(2) }}</strong>
             </li>
             <li>
                 <span>{{ "item.list.list.usage_diff" | trans }} +/-</span>
-                <strong>{{ stats.usage('5.14') - stats.usage('5.11') }}</strong>
+                <strong>{{ (stats.usage('5.14') - stats.usage('5.11'))|number_format(2) }}</strong>
             </li>
         </ol>
         <div class="spacer"></div>
@@ -93,7 +93,16 @@
 	<h2>{{ "item.details.champions.title" | trans }}</h2>
     <div class="inner-block">
         <div class="chart-container">
-            <div id="champion-chart"></div>
+            <div id="champion-usage-chart"></div>
+        </div>
+    </div>
+</div>
+
+<div class="block champions">
+    <h2>{{ "item.details.champions_winrate.title" | trans }}</h2>
+    <div class="inner-block">
+        <div class="chart-container">
+            <div id="champion-win-chart"></div>
         </div>
     </div>
 </div>
@@ -175,7 +184,7 @@ $(function ()
         }]
     });
 
-    $('#champion-chart').highcharts({
+    $('#champion-usage-chart').highcharts({
         chart: {
             polar: true,
             type: 'area'
@@ -183,9 +192,6 @@ $(function ()
         title: {
             text: '',
             x: -80
-        },
-        pane: {
-            size: '80%'
         },
         xAxis: {
             categories: [{% for champion in champions %}"<img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}' style='width:14px; vertical-align: middle; padding-right: 2px; float:left;' />{{ champion.name|raw }}"{% if not loop.last %},{% endif %}{% endfor %}],
@@ -222,6 +228,65 @@ $(function ()
             name: '5.14',
             data: [{% for champion in champions %}{{ stats.championUsage('5.14', champion) }}{% if not loop.last %},{% endif %}{% endfor %}],
             pointPlacement: 'on'
+        }]
+    });
+
+    $('#champion-win-chart').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: [{% for champion in champions %}"<img src='http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}' style='width:20px; vertical-align: middle; padding-right: 2px; float:left;' />"{% if not loop.last %},{% endif %}{% endfor %}],
+            labels: { useHTML: true }
+        },
+        yAxis: [
+        {
+            title: {
+                text: 'Win rate'
+            }
+        }, 
+        {
+            title: {
+                text: 'Win rate +/-'
+            },
+            opposite: true,
+            plotLines: [{
+                value: 0,
+                width: 1,
+                zIndex: 6,
+                color: "#db8e01"
+            }]
+        }],
+        legend: {
+            shadow: false
+        },
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}%</b><br/>'
+        },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: '5.11',
+            data: [{% for champion in champions %}{{ stats.championWinrate('5.11', champion) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            pointPadding: 0,
+        }, {
+            name: '5.14',
+            data: [{% for champion in champions %}{{ stats.championWinrate('5.14', champion) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            pointPadding: 0.2,
+        }, {
+            name: 'Win rate +/-',
+            data: [{% for champion in champions %}{{ (stats.championWinrate('5.14', champion) - stats.championWinrate('5.11', champion))|number_format(2) }}{% if not loop.last %},{% endif %}{% endfor %}],
+            type: "line",
+            yAxis: 1
         }]
     });
 });
