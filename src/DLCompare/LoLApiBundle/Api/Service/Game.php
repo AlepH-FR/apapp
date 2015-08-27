@@ -4,14 +4,14 @@ namespace DLCompare\LoLApiBundle\Api\Service;
 
 use DLCompare\LoLApiBundle\Api\Method;
 
-class Match extends AbstractService implements ServiceInterface
+class Game extends AbstractService implements ServiceInterface
 {
     /**
      * {@inheritdoc}
      */
 	public function getCode()
 	{
-		return "match";
+		return "game";
 	}
 
     /**
@@ -19,7 +19,7 @@ class Match extends AbstractService implements ServiceInterface
      */
     public function getPrefix()
     {
-    	return "api/lol/{region}/v{version}/match";
+    	return "api/lol/{region}/v{version}/game";
     }
 
     /**
@@ -27,7 +27,7 @@ class Match extends AbstractService implements ServiceInterface
      */
     public function getVersion()
     {
-    	return "2.2";
+    	return "1.3";
     }
 
     /**
@@ -36,7 +36,7 @@ class Match extends AbstractService implements ServiceInterface
     public function getAvailableMethods() 
     { 
         return [
-    		"details" => new Method($this, "{matchId}"),
+            "by_summoner" => new Method($this, "by-summoner/{summonerId}/recent"),
     	];
     }
 }
