@@ -46,22 +46,34 @@
 	<div class="left half block difference">
 		<h2>{{ "item.details.511.version" | trans }}</h2>
 		<div class="inner-block">
+            {% if data.511 %}
 			<p>
 				{{ data.511.gold.total }} <img src="{{ asset('bundles/dlcompareapapp/images/ico/gold.png') }}" class="icon" /><br />
 				<br />
 				{{ data.511.description|raw }}
 			</p>
+            {% else %}
+            <p>
+                no data
+            </p>
+            {% endif %}
 		</div>
 	</div>
 
 	<div class="right half block difference">
 		<h2>{{ "item.details.514.version" | trans }}</h2>
 		<div class="inner-block">
-			<p>
+            {% if data.514 %}
+            <p>
 				{{ data.514.gold.total }} <img src="{{ asset('bundles/dlcompareapapp/images/ico/gold.png') }}" class="icon" /><br />
 				<br />
 				{{ data.514.description|raw }}
 			</p>
+            {% else %}
+            <p>
+                no data
+            </p>
+            {% endif %}
 		</div>
 	</div>
 	<div class="spacer"></div>
@@ -112,7 +124,7 @@ $(function ()
 {
     $('ol li strong').each(function()
     {
-        var color = (parseInt($(this).html()) >= 0) ? "green" : "red";
+        var color = (parseFloat($(this).html()) >= 0) ? "green" : "red";
         $(this).css('color', color);
     });
 

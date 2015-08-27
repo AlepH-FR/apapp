@@ -20,7 +20,8 @@ class ControllerListener implements EventSubscriberInterface
     
     public function onKernelController(FilterControllerEvent $event)
     {
-        if (!is_array($controller = $event->getController())) {
+        if (!is_array($controller = $event->getController())) 
+        {
             return;
         }
 
@@ -32,18 +33,28 @@ class ControllerListener implements EventSubscriberInterface
         $methodConfigurations = $this->getConfigurations($this->reader->getMethodAnnotations($method));
 
         $configurations = array();
-        foreach (array_merge(array_keys($classConfigurations), array_keys($methodConfigurations)) as $key) {
-            if (!array_key_exists($key, $classConfigurations)) {
+        foreach (array_merge(array_keys($classConfigurations), array_keys($methodConfigurations)) as $key) 
+        {
+            if (!array_key_exists($key, $classConfigurations)) 
+            {
                 $configurations[$key] = $methodConfigurations[$key];
-            } elseif (!array_key_exists($key, $methodConfigurations)) {
+            } 
+            elseif (!array_key_exists($key, $methodConfigurations)) 
+            {
                 $configurations[$key] = $classConfigurations[$key];
-            } else {
-                if (is_array($classConfigurations[$key])) {
-                    if (!is_array($methodConfigurations[$key])) {
+            } 
+            else 
+            {
+                if (is_array($classConfigurations[$key])) 
+                {
+                    if (!is_array($methodConfigurations[$key])) 
+                    {
                         throw new \UnexpectedValueException('Configurations should both be an array or both not be an array');
                     }
                     $configurations[$key] = array_merge($classConfigurations[$key], $methodConfigurations[$key]);
-                } else {
+                } 
+                else 
+                {
                     // method configuration overrides class configuration
                     $configurations[$key] = $methodConfigurations[$key];
                 }
@@ -51,7 +62,8 @@ class ControllerListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        foreach ($configurations as $key => $attributes) {
+        foreach ($configurations as $key => $attributes) 
+        {
             $request->attributes->set($key, $attributes);
         }
     }
@@ -59,11 +71,16 @@ class ControllerListener implements EventSubscriberInterface
     protected function getConfigurations(array $annotations)
     {
         $configurations = array();
-        foreach ($annotations as $configuration) {
-            if ($configuration instanceof ConfigurationInterface) {
-                if ($configuration->allowArray()) {
+        foreach ($annotations as $configuration) 
+        {
+            if ($configuration instanceof ConfigurationInterface) 
+            {
+                if ($configuration->allowArray()) 
+                {
                     $configurations['_'.$configuration->getAliasName()][] = $configuration;
-                } else {
+                } 
+                else 
+                {
                     $configurations['_'.$configuration->getAliasName()] = $configuration;
                 }
             }

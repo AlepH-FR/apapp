@@ -118,7 +118,9 @@
 		</p>
 		{% for champion in type.champions if champion.note %}
 		<p>
-			<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" alt="{{ champion.name }}" title="{{ champion.name }}" />
+			<a href="{{ url('champion_details', {"id": champion.id }) }}">
+				<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/{{ champion.image }}" alt="{{ champion.name }}" title="{{ champion.name }}" />
+			</a>
 			{{ champion.note }}<br />
 		</p>
 		{% endfor %}
@@ -132,11 +134,13 @@
 	<h2>{{ "default.analysis.items.title" | trans }}</h2>
 	<div class="inner-block">
 		<p>
-			{{ "default.analysis.items.text" | trans }}
+			{{ "default.analysis.items.text" | trans | raw }}
 		</p>
 		{% for item in items if item.note %}
 		<p>
-			<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" alt="{{ item.name }}" title="{{ item.name }}" />
+			<a href="{{ url('item_details', {"id": item.id }) }}">
+				<img src="http://ddragon.leagueoflegends.com/cdn/5.14.1/img/item/{{ item.image }}" alt="{{ item.name }}" title="{{ item.name }}" />
+			</a>
 			{{ item.note }}<br />
 		</p>
 		{% endfor %}
@@ -144,12 +148,12 @@
 </div>
 
 <a name="global" class="anchor"></a>
-<div class="block analysis items">
+<div class="block analysis code global">
 	<h2>{{ "default.analysis.global.title" | trans }}</h2>
 	<div class="inner-block">
-		<p>
-			{{ "default.analysis.global.text" | trans }}
-		</p>
+		<div>
+			{{ "default.analysis.global.text" | trans | raw }}
+		</div>
 	</div>
 </div>
 

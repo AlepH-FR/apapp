@@ -52,13 +52,23 @@ class ItemController extends Controller
         $item   = $repo->findOneById($id);
         $stats  = new ItemStats($item, $this->get('service_container'));
 
+        try
+        {
+            $next = $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.14.1', 'itemData' => "all"]);
+            $prev = $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.11.1', 'itemData' => "all"]);
+        }
+        catch(\Exception $e)
+        {
+            if(!isset($next)) { $next = false; }
+            if(!isset($prev)) { $prev = false; }
+        }
         return [
             'champions'=> $stats->getMainChampions(),
             'item'     => $item,
             'stats'    => $stats,
             'data'     => [
-                '511' => $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.11.1', 'itemData' => "all"]),
-                '514' => $this->get('lolapi')->setRegion('na')->call('static_data', 'item_details', ['id' => $item->getDistantId()], ['version' => '5.14.1', 'itemData' => "all"])
+                '511' => $prev,
+                '514' => $next,
             ]
         ];
     }

@@ -31,7 +31,9 @@ class ActionCacheListener implements EventSubscriberInterface
         {
             $request->attributes->set('_cache_add', true);
             $request->attributes->set('_cache_path', $cache_path);
-        } else {
+        } 
+        else 
+        {
             $cache = file_get_contents($cache_path);
             $event->setController(function() use ($cache) {
                 $response = new Response();

@@ -113,8 +113,23 @@ default:
             text: "Champions"
         items:
             title: "Items analysis"
+            text: |
+                Here is an analysis of the most interesting items to study between the 5.11 and 5.14 patches. But feel free to explore the data of the other items to draw your own conclusions !
         global:
             title: "Global analysis and conclusion"
+            text: |
+                <h3>AP Items and Mages</h3>
+                Mana-pool oriented champions going Rod of Ages have been hit by the patches : Ryze, Anivia, Lissandra, Kassadin.<br />
+                In the mean time, "mana-less" mages like Rumble, Elise, Kennen (yeah i know she has a mana-pool but...) have been upped.<br />
+                The squishiest mages (Zyra, Velkoz) have been upped a lot because they can use effectively Liandry & Rylai now over Luden's Echo and other "not-so-tanky" ap items.<br />
+                <br />
+                The interesting effect of the AP item changes is that the builds are a lot more differentiated. Champions using nerfed items (Luden's on Ahri, Zhonya on Morga, Rod of Ages on Swain, etc.) are taking benefits of their lowered costs.<br />
+                The real conclusion of this website and, is that summoners using AP items that suits their champion are having a better than those going to the most AP possible builds.<br />
+                <br />
+                <h3>Other items updates</h3>
+                The 5.14 meta tends to go into champions with hard engage, especially in the fighter's category, and into attack speed champions (Warwick, Kayle, Yi etc.) because of the Devourer Enchant.<br />
+                <br />
+                Magic Resist items (Spirit Visage, Wit's End, Banshee's Veil) are also letting their champion having better win ratio. Maybe because there are more Mages ? Or maybe because Wit's End benefits from Devourer and Spirit Visage have been buffed ! More certainly both reasons are valid !
         type: 
             Fighter:
                 text: |

@@ -11,15 +11,14 @@ abstract class AbstractStats
     public function __call($name, array $arguments)
     {
         $method = '_' . $name;
+        if(!method_exists($this, $method))
+        {
+            $method = '_get' . ucfirst($name);
+        }
         $file   = $this->getCacheFilename($method, $arguments);
 
         if($this->refresh || !file_exists($file))
         {
-            if(!method_exists($this, $method))
-            {
-                $method = '_get' . ucfirst($name);
-            }
-
             $result = call_user_func_array([$this, $method], $arguments);
             file_put_contents($file, $result);
             return $result;
