@@ -7,12 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use DLCompare\ApAppBundle\Stats\ItemStats;
+use DLCompare\CacheBundle\Configuration\ActionCache;
 
 class ItemController extends Controller
 {
     /**
      * @Route("/items/list", name="item_list")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function listAction()
     {
@@ -45,6 +47,7 @@ class ItemController extends Controller
     /**
      * @Route("/items/{id}/details", name="item_details")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function detailsAction($id)
     {

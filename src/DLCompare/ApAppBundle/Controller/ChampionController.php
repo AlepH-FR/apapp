@@ -14,6 +14,7 @@ class ChampionController extends Controller
     /**
      * @Route("/champions/list", name="champion_list")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function listAction()
     {
@@ -48,6 +49,7 @@ class ChampionController extends Controller
     /**
      * @Route("/champions/{id}/details", name="champion_details")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function detailsAction($id)
     {

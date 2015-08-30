@@ -10,12 +10,14 @@ use DLCompare\ApAppBundle\Stats\GameStats;
 use DLCompare\ApAppBundle\Stats\ChampionStats;
 use DLCompare\ApAppBundle\Stats\TypeStats;
 use DLCompare\ApAppBundle\Stats\ItemStats;
+use DLCompare\CacheBundle\Configuration\ActionCache;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function indexAction()
     {
@@ -64,6 +66,7 @@ class DefaultController extends Controller
     /**
      * @Route("/about", name="about")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function aboutAction()
     {
@@ -73,6 +76,7 @@ class DefaultController extends Controller
     /**
      * @Route("/analysis", name="analysis")
      * @Template()
+     * @ActionCache(maxage=5184000)
      */
     public function analysisAction()
     {
