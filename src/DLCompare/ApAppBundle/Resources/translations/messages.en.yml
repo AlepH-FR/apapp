@@ -243,7 +243,7 @@ default:
                 Then AlepH started to create scripts to import the most data possible to get the most accurate, and executed them while he was integrating the design.<br />
                 <br />
                 After that, we built the pages, and thanks to the AWESOME Symfony2, Doctrine 2 and Highcharts, this was pretty fast. Because the data imported is pretty big (400k games means 4 millions game players, means ~24 millions items purchased), we had to use caching to fasten page processing.
-                Even if the statistical functions are part of the ApApp Bundle, we developped them so that it'll enrich the LoLApiBundle.<br />
+                Even if the statistical functions are part of the ApApp Bundle, we developed them so that it'll enrich the LoLApiBundle.<br />
                 The entity repositories are full of function enabling developers to access any kind of statistics based on the data in their own database. We hope it will help a lot.<br />
                 <br />
                 Eventually, we had enough time to work on the analysis of this data.<br />

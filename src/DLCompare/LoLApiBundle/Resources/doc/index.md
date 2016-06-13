@@ -54,7 +54,7 @@ We'll add more services going further, but given the delay of the challenge, we 
 
 * Caching
 
-To reduce the number of API calls, the API service has been developped with a built-in cache. By default it's a FileCache which will create files in your app/cache directory
+To reduce the number of API calls, the API service has been developed with a built-in cache. By default it's a FileCache which will create files in your app/cache directory
 
 You can also specify your own cache (if you want to use Memcache instead for example) in your app/config/config.yml file by writing
 
